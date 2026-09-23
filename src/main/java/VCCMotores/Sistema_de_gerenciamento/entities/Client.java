@@ -1,36 +1,45 @@
 package VCCMotores.Sistema_de_gerenciamento.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "/tb_client") 
-public class Client implements Serializable{
-	
-	private static final long serialVersionUID = 1L;
+@Table(name = "tb_client") 
+public class Client {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long id; 
 	private String name;
+	private String cpf;
 	private String email;
 	private String phone;
+	
+	@JsonIgnore
+	@OneToMany
+	private List<Service> serv = new ArrayList<>();
 	
 	private Client() {
 	}
 
-	public Client(Long id, String name, String email, String phone) {
+	public Client(Long id, String name, String cpf, String email, String phone) {
 		this.id = id;
 		this.name = name;
+		this.cpf = cpf;
 		this.email = email;
 		this.phone = phone;
-	}
+	} 
 
 	public Long getId() {
 		return id;
@@ -46,6 +55,14 @@ public class Client implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 
 	public String getEmail() {
@@ -80,4 +97,6 @@ public class Client implements Serializable{
 		Client other = (Client) obj;
 		return Objects.equals(id, other.id);
 	}
+
+	
 }
