@@ -45,7 +45,11 @@ public class Client {
 	
 	@JsonIgnore
 	@OneToMany
-	private List<Maintenance> serv = new ArrayList<>();
+	private List<Maintenance> maintenance = new ArrayList<>();
+	
+	@JsonIgnore
+	@OneToMany
+	private List<Budget> budget = new ArrayList<>();
 	
 	private Client() {
 	}

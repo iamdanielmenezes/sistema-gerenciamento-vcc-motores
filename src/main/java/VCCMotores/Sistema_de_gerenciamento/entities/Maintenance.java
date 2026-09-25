@@ -50,10 +50,12 @@ public class Maintenance {
 	public Maintenance() {
 	}
 
-	public Maintenance(Long id, Instant date, String description) {
+	public Maintenance(Long id, Instant date, String description, MaintenanceStatus status, Budget budget) {
 		this.id = id;
 		this.date = date;
 		this.description = description;
+		this.status = status;
+	    this.budget = budget;
 	}
 
 	public Long getId() {
@@ -78,6 +80,22 @@ public class Maintenance {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public MaintenanceStatus getStatus() {
+	    return status;
+	}
+
+	public void setStatus(MaintenanceStatus status) {
+	    this.status = status;
+	}
+
+	public Budget getBudget() {
+	    return budget;
+	}
+
+	public void setBudget(Budget budget) {
+	    this.budget = budget;
 	}
 
 	@Override

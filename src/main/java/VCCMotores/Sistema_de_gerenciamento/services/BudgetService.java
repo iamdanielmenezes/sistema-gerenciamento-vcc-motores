@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import VCCMotores.Sistema_de_gerenciamento.entities.Budget;
 import VCCMotores.Sistema_de_gerenciamento.repositories.BudgetRepository;
 import VCCMotores.Sistema_de_gerenciamento.services.exceptions.ResourceNotFoundException;
 
+@Service
 public class BudgetService {
 
 	@Autowired

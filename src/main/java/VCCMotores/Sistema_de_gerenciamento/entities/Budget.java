@@ -38,10 +38,11 @@ public class Budget {
 	public Budget() {
 	}
 
-	public Budget(Long id, BigDecimal price, BudgetStatus status) {
+	public Budget(Long id, BigDecimal price, BudgetStatus status, Maintenance maintenance) {
 		this.id = id;
 		this.price = price;
 		this.status = status;
+		this.maintenance = maintenance;
 	}
 
 	public Long getId() {
@@ -66,6 +67,14 @@ public class Budget {
 
 	public void setStatus(BudgetStatus status) {
 		this.status = status;
+	}
+	
+	public Maintenance getMaintenance() {
+	    return maintenance;
+	}
+
+	public void setMaintenance(Maintenance maintenance) {
+	    this.maintenance = maintenance;
 	}
 
 	@Override
