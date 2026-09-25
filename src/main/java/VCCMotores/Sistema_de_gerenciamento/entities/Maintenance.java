@@ -1,19 +1,19 @@
 package VCCMotores.Sistema_de_gerenciamento.entities;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -32,21 +32,21 @@ public class Maintenance {
 	@NotNull
 	private Instant date;
 
-	@NotNull
-	@PositiveOrZero
-	private BigDecimal price;
-
 	@NotBlank
 	@Size(min = 5, max = 500)
 	private String description;
 	
+	@JsonIgnore 
+	@OneToOne(mappedBy = "maintenance")
+	private Budget budget;
+	
+	
 	public Maintenance() {
 	}
 
-	public Maintenance(Long id, Instant date, BigDecimal price, String description) {
+	public Maintenance(Long id, Instant date, String description) {
 		this.id = id;
 		this.date = date;
-		this.price = price;
 		this.description = description;
 	}
 
@@ -64,14 +64,6 @@ public class Maintenance {
 
 	public void setDate(Instant date) {
 		this.date = date;
-	}
-
-	public BigDecimal getPrice() {
-		return price;
-	}
-
-	public void setPrice(BigDecimal price) {
-		this.price = price;
 	}
 
 	public String getDescription() {

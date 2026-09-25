@@ -40,7 +40,6 @@ public class MaintenanceService {
 		Maintenance entity = findById(id);
 		
 		entity.setDate(obj.getDate());
-		entity.setPrice(obj.getPrice());
 		entity.setDescription(obj.getDescription());
 
 		return repository.save(entity);
