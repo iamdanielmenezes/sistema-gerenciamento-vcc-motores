@@ -28,7 +28,7 @@ public class Client {
 	
 	@JsonIgnore
 	@OneToMany
-	private List<Service> serv = new ArrayList<>();
+	private List<Maintenance> serv = new ArrayList<>();
 	
 	private Client() {
 	}

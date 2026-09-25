@@ -13,8 +13,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_service")
-public class Service {
+@Table(name = "tb_maintenance")
+public class Maintenance {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +24,10 @@ public class Service {
 	private BigDecimal price;
 	private String description;
 	
-	public Service() {
+	public Maintenance() {
 	}
 
-	public Service(Long id, Instant date, BigDecimal price, String description) {
+	public Maintenance(Long id, Instant date, BigDecimal price, String description) {
 		this.id = id;
 		this.date = date;
 		this.price = price;
@@ -79,7 +79,7 @@ public class Service {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Service other = (Service) obj;
+		Maintenance other = (Maintenance) obj;
 		return Objects.equals(id, other.id);
 	}
 }
