@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import VCCMotores.Sistema_de_gerenciamento.entities.Client;
 import VCCMotores.Sistema_de_gerenciamento.services.ClientService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/client")
@@ -38,7 +39,7 @@ public class ClientResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Client> insert(@RequestBody Client obj) {
+	public ResponseEntity<Client> insert(@RequestBody @Valid Client obj) {
 		obj = clientService.insert(obj);
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
@@ -55,7 +56,7 @@ public class ClientResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Client> update(@PathVariable Long id, @RequestBody Client obj) {
+	public ResponseEntity<Client> update(@PathVariable Long id, @RequestBody @Valid Client obj) {
 		obj = clientService.update(id, obj);
 		return ResponseEntity.ok().body(obj); 
 	}

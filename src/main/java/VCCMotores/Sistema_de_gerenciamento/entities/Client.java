@@ -1,9 +1,10 @@
 package VCCMotores.Sistema_de_gerenciamento.entities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -13,6 +14,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_client") 
@@ -21,9 +26,21 @@ public class Client {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id; 
+	
+	@NotBlank
+	@Size(min = 3, max = 100)
 	private String name;
+	
+	@NotBlank
+	@CPF
 	private String cpf;
+	
+	@NotBlank
+	@Email
 	private String email;
+	
+	@NotBlank
+	@Pattern(regexp = "\\(\\d{2}\\)\\d{9}")
 	private String phone;
 	
 	@JsonIgnore

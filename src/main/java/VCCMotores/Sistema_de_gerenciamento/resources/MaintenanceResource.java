@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import VCCMotores.Sistema_de_gerenciamento.entities.Maintenance;
 import VCCMotores.Sistema_de_gerenciamento.services.MaintenanceService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/maintenance")
@@ -38,7 +39,7 @@ public class MaintenanceResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Maintenance> insert(@RequestBody Maintenance obj) {
+	public ResponseEntity<Maintenance> insert(@RequestBody @Valid Maintenance obj) {
 		obj = maintenance.insert(obj);
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
@@ -55,7 +56,7 @@ public class MaintenanceResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Maintenance> update(@PathVariable Long id, @RequestBody Maintenance obj) {
+	public ResponseEntity<Maintenance> update(@PathVariable Long id, @RequestBody @Valid Maintenance obj) {
 		obj = maintenance.update(id, obj);
 		return ResponseEntity.ok().body(obj); 
 	}

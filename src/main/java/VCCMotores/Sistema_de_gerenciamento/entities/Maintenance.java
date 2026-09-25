@@ -11,6 +11,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_maintenance")
@@ -19,9 +23,21 @@ public class Maintenance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Sao_Paulo")
+
+	@JsonFormat(
+	    shape = JsonFormat.Shape.STRING,
+	    pattern = "dd/MM/yyyy HH:mm:ss",
+	    timezone = "America/Sao_Paulo"
+	)
+	@NotNull
 	private Instant date;
+
+	@NotNull
+	@PositiveOrZero
 	private BigDecimal price;
+
+	@NotBlank
+	@Size(min = 5, max = 500)
 	private String description;
 	
 	public Maintenance() {
