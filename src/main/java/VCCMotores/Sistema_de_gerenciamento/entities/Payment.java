@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_payment")
@@ -22,12 +23,15 @@ public class Payment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Enumerated(EnumType.STRING)
-	private PaymentStatus status;
-	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private PaymentMethod method;
 	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private PaymentStatus status;
+	
+	@NotNull
 	@OneToOne
 	@JoinColumn(name = "budget_id")
 	private Budget budget;
