@@ -6,7 +6,10 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import VCCMotores.Sistema_de_gerenciamento.entities.enums.MaintenanceStatus;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,6 +38,9 @@ public class Maintenance {
 	@NotBlank
 	@Size(min = 5, max = 500)
 	private String description;
+	
+	@Enumerated(EnumType.STRING)
+	private MaintenanceStatus status;
 	
 	@JsonIgnore 
 	@OneToOne(mappedBy = "maintenance")
