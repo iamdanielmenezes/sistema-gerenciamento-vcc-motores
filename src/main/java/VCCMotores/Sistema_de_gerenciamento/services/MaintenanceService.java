@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import VCCMotores.Sistema_de_gerenciamento.entities.Maintenance;
+import VCCMotores.Sistema_de_gerenciamento.repositories.ClientRepository;
 import VCCMotores.Sistema_de_gerenciamento.repositories.MaintenanceRepository;
 import VCCMotores.Sistema_de_gerenciamento.services.exceptions.ResourceNotFoundException;
 
@@ -15,6 +16,9 @@ public class MaintenanceService {
 
 	@Autowired
 	private MaintenanceRepository repository; 
+	
+	@Autowired
+	private ClientRepository clientRepository;
 	
 	public List<Maintenance> findAll(){
 		return repository.findAll();
@@ -26,7 +30,10 @@ public class MaintenanceService {
 	}
 	
 	public Maintenance insert(Maintenance obj) {
-		return repository.save(obj);
+	    if (!clientRepository.existsById(obj.getClient().getId())) {
+	        throw new ResourceNotFoundException(obj.getClient().getId());
+	    }
+	    return repository.save(obj);
 	}
 	
 	public void delete(Long id) {
@@ -37,11 +44,12 @@ public class MaintenanceService {
 	}
 	
 	public Maintenance update(Long id, Maintenance obj) {
-		Maintenance entity = findById(id);
-		
-		entity.setDate(obj.getDate());
-		entity.setDescription(obj.getDescription());
+	    Maintenance entity = findById(id);
 
-		return repository.save(entity);
+	    entity.setDate(obj.getDate());
+	    entity.setDescription(obj.getDescription());
+	    entity.setStatus(obj.getStatus());
+
+	    return repository.save(entity);
 	}
 }

@@ -13,6 +13,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -46,16 +48,22 @@ public class Maintenance {
 	@OneToOne(mappedBy = "maintenance")
 	private Budget budget;
 	
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "client_id")
+	private Client client;
+	
 	
 	public Maintenance() {
 	}
 
-	public Maintenance(Long id, Instant date, String description, MaintenanceStatus status, Budget budget) {
-		this.id = id;
-		this.date = date;
-		this.description = description;
-		this.status = status;
+	public Maintenance(Long id, Instant date, String description, MaintenanceStatus status, Budget budget, Client client) {
+	    this.id = id;
+	    this.date = date;
+	    this.description = description;
+	    this.status = status;
 	    this.budget = budget;
+	    this.client = client;
 	}
 
 	public Long getId() {
@@ -96,6 +104,14 @@ public class Maintenance {
 
 	public void setBudget(Budget budget) {
 	    this.budget = budget;
+	}
+	
+	public Client getClient() {
+	    return client;
+	}
+
+	public void setClient(Client client) {
+	    this.client = client;
 	}
 
 	@Override

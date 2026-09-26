@@ -27,29 +27,27 @@ public class Client {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id; 
 	
-	@NotBlank
-	@Size(min = 3, max = 100)
+	@NotBlank(message = "nome é obrigatório")
+	@Size(min = 3, max = 100, message = "nome deve ter entre 3 e 100 caracteres")
 	private String name;
 	
 	@NotBlank
-	@CPF
+	@CPF(message = "CPF inválido")
 	private String cpf;
 	
 	@NotBlank
-	@Email
+	@Email(message = "e-mail inválido")
 	private String email;
 	
-	@NotBlank
-	@Pattern(regexp = "\\(\\d{2}\\)\\d{9}")
-	private String phone;
+	@Pattern(
+		    regexp = "(\\d{2}\\d{9}|\\(\\d{2}\\)\\d{9}|\\(\\d{2}\\)\\d{5}-\\d{4})",
+		    message = "telefone inválido"
+		)
+		private String phone;
 	
 	@JsonIgnore
-	@OneToMany
+	@OneToMany(mappedBy = "client")
 	private List<Maintenance> maintenance = new ArrayList<>();
-	
-	@JsonIgnore
-	@OneToMany
-	private List<Budget> budget = new ArrayList<>();
 	
 	private Client() {
 	}
