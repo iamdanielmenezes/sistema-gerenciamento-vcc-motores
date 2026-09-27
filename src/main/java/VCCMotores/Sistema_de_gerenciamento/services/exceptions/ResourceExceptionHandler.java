@@ -59,4 +59,16 @@ public class ResourceExceptionHandler {
 
 	    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
+	
+	@ExceptionHandler(BusinessException.class)
+	public ResponseEntity<StandardError> business(BusinessException e) {
+	    StandardError err = new StandardError();
+
+	    err.setTimestamp(Instant.now());
+	    err.setStatus(HttpStatus.BAD_REQUEST.value());
+	    err.setError("Erro de regra de negócio");
+	    err.setMessage(e.getMessage());
+
+	    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
 }

@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import VCCMotores.Sistema_de_gerenciamento.entities.Budget;
+import VCCMotores.Sistema_de_gerenciamento.entities.enums.BudgetStatus;
 import VCCMotores.Sistema_de_gerenciamento.repositories.BudgetRepository;
 import VCCMotores.Sistema_de_gerenciamento.repositories.MaintenanceRepository;
+import VCCMotores.Sistema_de_gerenciamento.services.exceptions.BusinessException;
 import VCCMotores.Sistema_de_gerenciamento.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -33,6 +35,7 @@ public class BudgetService {
 		if (!maintenanceRepository.existsById(obj.getMaintenance().getId())) {
 			throw new ResourceNotFoundException(obj.getMaintenance().getId());
 		}
+		obj.setStatus(BudgetStatus.AGUARDANDO_APROVACAO);
 		return repository.save(obj);
 	}
 
@@ -46,6 +49,14 @@ public class BudgetService {
 	public Budget update(Long id, Budget obj) {
 		Budget entity = findById(id);
 
+		if (entity.getStatus() == BudgetStatus.CANCELADO && obj.getStatus() == BudgetStatus.APROVADO) {
+			throw new BusinessException("Este orçamento foi cancelado e não pode ser aprovado novamente");
+		}
+
+		if (entity.getStatus() == BudgetStatus.APROVADO && obj.getStatus() == BudgetStatus.AGUARDANDO_APROVACAO) {
+			throw new BusinessException("Este orçamento ja foi aprovado");
+		}
+		
 		entity.setPrice(obj.getPrice());
 		entity.setStatus(obj.getStatus());
 

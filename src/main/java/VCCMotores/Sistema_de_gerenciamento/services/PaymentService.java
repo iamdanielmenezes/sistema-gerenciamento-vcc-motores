@@ -6,9 +6,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import VCCMotores.Sistema_de_gerenciamento.entities.Budget;
 import VCCMotores.Sistema_de_gerenciamento.entities.Payment;
+import VCCMotores.Sistema_de_gerenciamento.entities.enums.BudgetStatus;
 import VCCMotores.Sistema_de_gerenciamento.repositories.BudgetRepository;
 import VCCMotores.Sistema_de_gerenciamento.repositories.PaymentRepository;
+import VCCMotores.Sistema_de_gerenciamento.services.exceptions.BusinessException;
 import VCCMotores.Sistema_de_gerenciamento.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -30,10 +33,22 @@ public class PaymentService {
 	}
 
 	public Payment insert(Payment obj) {
-		if (!budgetRepository.existsById(obj.getBudget().getId())) {
-			throw new ResourceNotFoundException(obj.getBudget().getId());
-		}
-		return repository.save(obj);
+	    if (!budgetRepository.existsById(obj.getBudget().getId())) {
+	        throw new ResourceNotFoundException(obj.getBudget().getId());
+	    }
+
+	    Budget budget = budgetRepository.findById(obj.getBudget().getId())
+	            .orElseThrow(() -> new ResourceNotFoundException(obj.getBudget().getId()));
+
+	    if (budget.getStatus() != BudgetStatus.APROVADO) {
+	        throw new BusinessException("O orçamento precisa estar aprovado para realizar o pagamento");
+	    }
+	    
+	    if (repository.existsByBudgetId(obj.getBudget().getId())) {
+	        throw new BusinessException("Este orçamento já possui um pagamento");
+	    }
+
+	    return repository.save(obj);
 	}
 
 	public void delete(Long id) {

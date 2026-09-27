@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import VCCMotores.Sistema_de_gerenciamento.entities.Maintenance;
+import VCCMotores.Sistema_de_gerenciamento.entities.enums.MaintenanceStatus;
 import VCCMotores.Sistema_de_gerenciamento.repositories.ClientRepository;
 import VCCMotores.Sistema_de_gerenciamento.repositories.MaintenanceRepository;
 import VCCMotores.Sistema_de_gerenciamento.services.exceptions.ResourceNotFoundException;
@@ -33,6 +34,7 @@ public class MaintenanceService {
 	    if (!clientRepository.existsById(obj.getClient().getId())) {
 	        throw new ResourceNotFoundException(obj.getClient().getId());
 	    }
+	    obj.setStatus(MaintenanceStatus.ORCADO);
 	    return repository.save(obj);
 	}
 	
