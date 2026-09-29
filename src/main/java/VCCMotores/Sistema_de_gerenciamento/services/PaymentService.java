@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import VCCMotores.Sistema_de_gerenciamento.entities.Budget;
 import VCCMotores.Sistema_de_gerenciamento.entities.Payment;
 import VCCMotores.Sistema_de_gerenciamento.entities.enums.BudgetStatus;
+import VCCMotores.Sistema_de_gerenciamento.entities.enums.PaymentStatus;
 import VCCMotores.Sistema_de_gerenciamento.repositories.BudgetRepository;
 import VCCMotores.Sistema_de_gerenciamento.repositories.PaymentRepository;
 import VCCMotores.Sistema_de_gerenciamento.services.exceptions.BusinessException;
@@ -62,5 +63,9 @@ public class PaymentService {
 		entity.setMethod(obj.getMethod());
 
 		return repository.save(entity);
+	}
+	
+	public List<Payment> findByStatus(PaymentStatus status) {
+	    return repository.findByStatus(status);
 	}
 }

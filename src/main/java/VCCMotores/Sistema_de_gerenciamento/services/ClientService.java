@@ -46,4 +46,8 @@ public class ClientService {
 
 		return repository.save(entity);
 	}
+	
+	public List<Client> findByName(String name) {
+	    return repository.findByNameContainingIgnoreCase(name);
+	}
 }

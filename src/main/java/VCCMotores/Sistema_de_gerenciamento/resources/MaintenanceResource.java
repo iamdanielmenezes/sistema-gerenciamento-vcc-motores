@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import VCCMotores.Sistema_de_gerenciamento.entities.Maintenance;
+import VCCMotores.Sistema_de_gerenciamento.entities.enums.MaintenanceStatus;
 import VCCMotores.Sistema_de_gerenciamento.services.MaintenanceService;
 import jakarta.validation.Valid;
 
@@ -59,5 +61,17 @@ public class MaintenanceResource {
 	public ResponseEntity<Maintenance> update(@PathVariable Long id, @RequestBody @Valid Maintenance obj) {
 		obj = maintenance.update(id, obj);
 		return ResponseEntity.ok().body(obj); 
+	}
+	
+	@GetMapping(params = "clientId")
+	public ResponseEntity<List<Maintenance>> findByClientId(@RequestParam Long clientId) {
+	    List<Maintenance> list = maintenance.findByClientId(clientId);
+	    return ResponseEntity.ok(list);
+	}
+	
+	@GetMapping(params = "status")
+	public ResponseEntity<List<Maintenance>> findByStatus(@RequestParam MaintenanceStatus status) {
+	    List<Maintenance> list = maintenance.findByStatus(status);
+	    return ResponseEntity.ok(list);
 	}
 }

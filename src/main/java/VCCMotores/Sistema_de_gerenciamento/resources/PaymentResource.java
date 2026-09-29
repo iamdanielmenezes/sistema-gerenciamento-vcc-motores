@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import VCCMotores.Sistema_de_gerenciamento.entities.Payment;
+import VCCMotores.Sistema_de_gerenciamento.entities.enums.PaymentStatus;
 import VCCMotores.Sistema_de_gerenciamento.services.PaymentService;
 import jakarta.validation.Valid;
 
@@ -59,5 +61,11 @@ public class PaymentResource {
 	public ResponseEntity<Payment> update(@PathVariable Long id, @RequestBody @Valid Payment obj) {
 		obj = paymentService.update(id, obj);
 		return ResponseEntity.ok().body(obj); 
+	}
+	
+	@GetMapping(params = "status")
+	public ResponseEntity<List<Payment>> findByStatus(@RequestParam PaymentStatus status) {
+	    List<Payment> list = paymentService.findByStatus(status);
+	    return ResponseEntity.ok(list);
 	}
 }

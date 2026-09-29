@@ -68,4 +68,12 @@ public class MaintenanceService {
 
 	    return repository.save(entity);
 	}
+	
+	public List<Maintenance> findByClientId(Long clientId) {
+	    return repository.findByClientId(clientId);
+	}
+	
+	public List<Maintenance> findByStatus(MaintenanceStatus status) {
+	    return repository.findByStatus(status);
+	}
 }

@@ -74,4 +74,8 @@ public class BudgetService {
 
 		return repository.save(entity);
 	}
+	
+	public List<Budget> findByStatus(BudgetStatus status) {
+	    return repository.findByStatus(status);
+	}
 }

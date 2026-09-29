@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import VCCMotores.Sistema_de_gerenciamento.entities.Budget;
+import VCCMotores.Sistema_de_gerenciamento.entities.enums.BudgetStatus;
 import VCCMotores.Sistema_de_gerenciamento.services.BudgetService;
 import jakarta.validation.Valid;
 
@@ -59,5 +61,11 @@ public class BudgetResource {
 	public ResponseEntity<Budget> update(@PathVariable Long id, @RequestBody @Valid Budget obj) {
 		obj = budgetService.update(id, obj);
 		return ResponseEntity.ok().body(obj); 
+	}
+	
+	@GetMapping(params = "status")
+	public ResponseEntity<List<Budget>> findByStatus(@RequestParam BudgetStatus status) {
+	    List<Budget> list = budgetService.findByStatus(status);
+	    return ResponseEntity.ok(list);
 	}
 }

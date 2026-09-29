@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -59,5 +60,11 @@ public class ClientResource {
 	public ResponseEntity<Client> update(@PathVariable Long id, @RequestBody @Valid Client obj) {
 		obj = clientService.update(id, obj);
 		return ResponseEntity.ok().body(obj); 
+	}
+	
+	@GetMapping(params = "name")
+	public ResponseEntity<List<Client>> findByName(@RequestParam String name) {
+	    List<Client> list = clientService.findByName(name);
+	    return ResponseEntity.ok(list);
 	}
 }
