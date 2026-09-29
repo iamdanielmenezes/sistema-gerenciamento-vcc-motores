@@ -2,7 +2,7 @@
 
 Sistema de gerenciamento desenvolvido para uma empresa de manutenção de bombas hidráulicas, com foco no controle de clientes, manutenções, orçamentos e pagamentos.
 
-O projeto foi desenvolvido utilizando Java e Spring Boot, com uma API REST integrada a um banco de dados PostgreSQL, aplicando conceitos de Programação Orientada a Objetos, persistência de dados, validação, tratamento de exceções e regras de negócio.
+O projeto foi desenvolvido utilizando Java e Spring Boot, com uma API REST integrada a um banco de dados PostgreSQL, permitindo gerenciar clientes, manutenções, orçamentos e pagamentos, além de aplicar validações, tratamento de exceções e regras de negócio.
 
 O projeto foi desenvolvido com foco em:
 
@@ -125,8 +125,8 @@ O projeto segue uma estrutura em camadas, separando as responsabilidades entre:
 
 # Objetivo
 
-Este projeto foi desenvolvido com o objetivo de aplicar na prática os conhecimentos adquiridos durante meus estudos de Java e Spring Boot, utilizando como base uma situação real de gerenciamento de serviços.
+Este projeto foi desenvolvido a partir de uma necessidade real de uma pequena empresa de manutenção de bombas hidráulicas, pertencente a um amigo, com o objetivo de criar uma solução simples para auxiliar no gerenciamento de clientes, manutenções, orçamentos e pagamentos.
 
-Além de servir como projeto de estudo, o sistema foi pensado para representar uma solução simples para o gerenciamento das atividades de uma pequena empresa.
+Além de buscar atender a essa necessidade, o projeto também foi desenvolvido como parte dos meus estudos em Java e Spring Boot, permitindo aplicar na prática os conhecimentos adquiridos e desenvolver um projeto real para composição do meu portfólio em desenvolvimento Back-end.
 
-Projeto desenvolvido para fins de estudo e composição de portfólio em desenvolvimento Back-end.
+Projeto desenvolvido com o objetivo de unir aprendizado, prática e uma aplicação para uma necessidade real.
