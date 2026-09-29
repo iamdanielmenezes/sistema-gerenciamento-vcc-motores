@@ -1,6 +1,8 @@
 package VCCMotores.Sistema_de_gerenciamento.entities;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import VCCMotores.Sistema_de_gerenciamento.entities.enums.BudgetStatus;
@@ -11,7 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -31,14 +33,14 @@ public class Budget {
 	@Enumerated(EnumType.STRING)
 	private BudgetStatus status;
 	
-	@OneToOne 
-	@JoinColumn(name = "maintenance_id")
-	private Maintenance maintenance;
+	@OneToMany
+	@JoinColumn(name = "budget_id")
+	private List<Maintenance> maintenance = new ArrayList<>();
 	
 	public Budget() {
 	}
 
-	public Budget(Long id, BigDecimal price, BudgetStatus status, Maintenance maintenance) {
+	public Budget(Long id, BigDecimal price, BudgetStatus status, List<Maintenance> maintenance) {
 		this.id = id;
 		this.price = price;
 		this.status = status;
@@ -69,11 +71,11 @@ public class Budget {
 		this.status = status;
 	}
 	
-	public Maintenance getMaintenance() {
+	public List<Maintenance> getMaintenance() {
 	    return maintenance;
 	}
 
-	public void setMaintenance(Maintenance maintenance) {
+	public void setMaintenance(List<Maintenance> maintenance) {
 	    this.maintenance = maintenance;
 	}
 

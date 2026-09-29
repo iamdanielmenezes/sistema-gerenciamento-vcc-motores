@@ -10,6 +10,7 @@ import VCCMotores.Sistema_de_gerenciamento.entities.Maintenance;
 import VCCMotores.Sistema_de_gerenciamento.entities.enums.MaintenanceStatus;
 import VCCMotores.Sistema_de_gerenciamento.repositories.ClientRepository;
 import VCCMotores.Sistema_de_gerenciamento.repositories.MaintenanceRepository;
+import VCCMotores.Sistema_de_gerenciamento.services.exceptions.BusinessException;
 import VCCMotores.Sistema_de_gerenciamento.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -47,6 +48,19 @@ public class MaintenanceService {
 	
 	public Maintenance update(Long id, Maintenance obj) {
 	    Maintenance entity = findById(id);
+
+	    if (entity.getStatus() == MaintenanceStatus.FINALIZADO) {
+	        throw new BusinessException("Esta manutenção já foi finalizada");
+	    }
+	    
+	    if (entity.getStatus() == MaintenanceStatus.ORCADO && obj.getStatus() == MaintenanceStatus.FINALIZADO) {
+	        throw new BusinessException("A manutenção precisa estar em andamento antes de ser finalizada");
+	    }
+	    
+	    if (entity.getStatus() == MaintenanceStatus.EM_MANUTENCAO 
+	            && obj.getStatus() == MaintenanceStatus.ORCADO) {
+	        throw new BusinessException("A manutenção que já começou não pode voltar para orçado");
+	    }
 
 	    entity.setDate(obj.getDate());
 	    entity.setDescription(obj.getDescription());

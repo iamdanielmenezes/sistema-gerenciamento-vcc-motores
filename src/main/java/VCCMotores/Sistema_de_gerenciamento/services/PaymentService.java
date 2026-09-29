@@ -33,10 +33,7 @@ public class PaymentService {
 	}
 
 	public Payment insert(Payment obj) {
-	    if (!budgetRepository.existsById(obj.getBudget().getId())) {
-	        throw new ResourceNotFoundException(obj.getBudget().getId());
-	    }
-
+	   
 	    Budget budget = budgetRepository.findById(obj.getBudget().getId())
 	            .orElseThrow(() -> new ResourceNotFoundException(obj.getBudget().getId()));
 

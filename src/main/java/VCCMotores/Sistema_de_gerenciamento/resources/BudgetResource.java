@@ -20,7 +20,7 @@ import VCCMotores.Sistema_de_gerenciamento.services.BudgetService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(value = "budget")
+@RequestMapping(value = "/budget")
 public class BudgetResource {
 
 	@Autowired

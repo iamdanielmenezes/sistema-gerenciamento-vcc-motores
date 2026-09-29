@@ -15,7 +15,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -44,8 +43,9 @@ public class Maintenance {
 	@Enumerated(EnumType.STRING)
 	private MaintenanceStatus status;
 	
-	@JsonIgnore 
-	@OneToOne(mappedBy = "maintenance")
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "budget_id")
 	private Budget budget;
 	
 	@NotNull

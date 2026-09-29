@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import VCCMotores.Sistema_de_gerenciamento.entities.Budget;
+import VCCMotores.Sistema_de_gerenciamento.entities.Maintenance;
 import VCCMotores.Sistema_de_gerenciamento.entities.enums.BudgetStatus;
 import VCCMotores.Sistema_de_gerenciamento.repositories.BudgetRepository;
 import VCCMotores.Sistema_de_gerenciamento.repositories.MaintenanceRepository;
@@ -32,11 +33,22 @@ public class BudgetService {
 	}
 
 	public Budget insert(Budget obj) {
-		if (!maintenanceRepository.existsById(obj.getMaintenance().getId())) {
-			throw new ResourceNotFoundException(obj.getMaintenance().getId());
-		}
-		obj.setStatus(BudgetStatus.AGUARDANDO_APROVACAO);
-		return repository.save(obj);
+
+	    for (Maintenance maintenance : obj.getMaintenance()) {
+
+	        if (!maintenanceRepository.existsById(maintenance.getId())) {
+	            throw new ResourceNotFoundException(maintenance.getId());
+	        }
+
+	        if (repository.existsByMaintenanceIdAndStatusNot(
+	                maintenance.getId(), BudgetStatus.CANCELADO)) {
+	            throw new BusinessException(
+	                "Esta manutenção já possui um orçamento ativo");
+	        }
+	    }
+
+	    obj.setStatus(BudgetStatus.AGUARDANDO_APROVACAO);
+	    return repository.save(obj);
 	}
 
 	public void delete(Long id) {
