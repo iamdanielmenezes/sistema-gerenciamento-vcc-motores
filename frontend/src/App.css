@@ -1,0 +1,53 @@
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.menu-lateral {
+  width: 240px;
+  flex-shrink: 0;
+  background-color: var(--cor-menu);
+  color: var(--cor-branco);
+  padding: 24px 16px;
+}
+
+.menu-lateral h2 {
+  font-size: 20px;
+  margin: 0 0 32px;
+}
+
+.menu-lateral nav p {
+  padding: 12px;
+  margin: 4px 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.menu-lateral nav p:hover {
+  background-color: #334155;
+}
+
+.area-principal {
+  flex: 1;
+  min-width: 0;
+}
+
+.cabecalho {
+  background-color: var(--cor-branco);
+  padding: 20px 32px;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.cabecalho h1 {
+  font-size: 22px;
+  margin: 0;
+}
+
+.conteudo {
+  padding: 32px;
+}
+
+.conteudo h2 {
+  margin-top: 0;
+}
