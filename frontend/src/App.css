@@ -102,7 +102,7 @@
     background-color: #22C55E;
 }
 
-/* Área principal e cabeçalho */
+/* Cabeçalho */
 
 .area-principal {
     flex: 1;
@@ -165,7 +165,7 @@
     font-size: 11px;
 }
 
-/* Conteúdo da página */
+/* Área de conteúdo */
 
 .conteudo {
     width: 100%;
@@ -208,6 +208,39 @@
     color: var(--cor-texto-secundario);
     font-size: 12px;
     white-space: nowrap;
+}
+
+/* Área de ações e botões */
+
+.acoes-pagina {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.botao-principal {
+    padding: 11px 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--cor-principal);
+    color: var(--cor-branco);
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.botao-principal:hover {
+    background-color: #1D4ED8;
+}
+
+.botao-principal:active {
+    transform: scale(0.98);
+}
+
+.botao-principal:focus-visible {
+    outline: 3px solid #93C5FD;
+    outline-offset: 3px;
 }
 
 /* Cards de indicadores */
@@ -343,7 +376,7 @@
     font-weight: bold;
 }
 
-/* Indicadores de status */
+/* Status */
 
 .badge {
     display: inline-flex;
@@ -369,6 +402,8 @@
     color: #92400E;
 }
 
+/* Rodapés */
+
 .painel-rodape {
     padding: 14px 24px;
     border-top: 1px solid #E2E8F0;
@@ -383,7 +418,7 @@
     text-align: center;
 }
 
-/* Responsividade */
+/* Responsividade para tablets */
 
 @media (max-width: 1100px) {
     .grade-indicadores {
@@ -394,6 +429,8 @@
         padding: 24px;
     }
 }
+
+/* Responsividade para celulares */
 
 @media (max-width: 760px) {
     .layout {
@@ -445,11 +482,16 @@
     .titulo-pagina {
         align-items: flex-start;
         flex-direction: column;
-        gap: 12px;
+        gap: 16px;
     }
 
     .titulo-pagina h2 {
         font-size: 24px;
+    }
+
+    .acoes-pagina {
+        align-items: center;
+        flex-wrap: wrap;
     }
 
     .grade-indicadores {
@@ -480,6 +522,8 @@
     }
 }
 
+/* Celulares estreitos */
+
 @media (max-width: 400px) {
     .grade-indicadores {
         grid-template-columns: 1fr;
@@ -497,4 +541,14 @@
     .cabecalho-titulo p {
         font-size: 11px;
     }
+
+    .acoes-pagina {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .botao-principal {
+        width: 100%;
+    }
 }
+

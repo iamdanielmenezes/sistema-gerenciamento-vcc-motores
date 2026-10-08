@@ -36,27 +36,30 @@ const manutencoes: Manutencao[] = [
 ];
 
 function Badge({ status }: { status: Status }) {
-    const classe =
-        status === "Concluída"
-            ? "badge badge-sucesso"
-            : status === "Em andamento"
-                ? "badge badge-andamento"
-                : "badge badge-pendente";
+    let classe = "badge badge-pendente";
+
+    if (status === "Concluída") {
+        classe = "badge badge-sucesso";
+    } else if (status === "Em andamento") {
+        classe = "badge badge-andamento";
+    }
 
     return <span className={classe}>{status}</span>;
 }
+
+type CardIndicadorProps = {
+    titulo: string;
+    valor: string;
+    descricao: string;
+    simbolo: string;
+};
 
 function CardIndicador({
                            titulo,
                            valor,
                            descricao,
                            simbolo,
-                       }: {
-    titulo: string;
-    valor: string;
-    descricao: string;
-    simbolo: string;
-}) {
+                       }: CardIndicadorProps) {
     return (
         <article className="card-indicador">
             <div className="indicador-topo">
@@ -123,10 +126,25 @@ function App() {
                             <h2>Dashboard</h2>
                             <p>Acompanhe os principais indicadores da oficina.</p>
                         </div>
-                        <span className="data-atual">Outubro de 2026</span>
+
+                        <div className="acoes-pagina">
+                            <span className="data-atual">Outubro de 2026</span>
+                            <button
+                                className="botao-principal"
+                                type="button"
+                                onClick={() =>
+                                    alert("A criação de manutenções será implementada depois.")
+                                }
+                            >
+                                + Nova manutenção
+                            </button>
+                        </div>
                     </section>
 
-                    <section className="grade-indicadores" aria-label="Indicadores">
+                    <section
+                        className="grade-indicadores"
+                        aria-label="Indicadores do sistema"
+                    >
                         <CardIndicador
                             titulo="Total de clientes"
                             valor="128"
@@ -162,7 +180,10 @@ function App() {
                                 <h3>Manutenções recentes</h3>
                                 <p>Acompanhe os últimos serviços registrados.</p>
                             </div>
-                            <span className="contador-registros">3 registros de exemplo</span>
+
+                            <span className="contador-registros">
+                3 registros de exemplo
+              </span>
                         </div>
 
                         <div className="tabela-container">
@@ -181,7 +202,9 @@ function App() {
                                 {manutencoes.map((manutencao) => (
                                     <tr key={manutencao.id}>
                                         <td>#{manutencao.id}</td>
-                                        <td className="celula-cliente">{manutencao.cliente}</td>
+                                        <td className="celula-cliente">
+                                            {manutencao.cliente}
+                                        </td>
                                         <td>{manutencao.servico}</td>
                                         <td>{manutencao.data}</td>
                                         <td>
@@ -194,7 +217,7 @@ function App() {
                         </div>
 
                         <div className="painel-rodape">
-                            <span>Dados ilustrativos para a construção da interface.</span>
+                            Dados ilustrativos para a construção da interface.
                         </div>
                     </section>
 
