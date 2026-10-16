@@ -1,7 +1,16 @@
+
 import { useEffect, useState } from "react";
 import type { Cliente } from "./types/Client";
-import "./App.css";
+import {
+    listarClientes,
+    cadastrarCliente,
+    atualizarCliente,
+    excluirCliente,
+    buscarClientePorId,
+} from "./services/ClienteService";
+import { ApiError } from "./services/apiError";
 import Botao from "./components/Botao";
+import "./App.css";
 
 type Status = "Em andamento" | "Concluída" | "Aguardando";
 
@@ -78,23 +87,30 @@ function App() {
     const [clientes, setClientes] = useState<Cliente[]>([]);
     const [carregandoClientes, setCarregandoClientes] = useState(true);
     const [erroClientes, setErroClientes] = useState("");
+    const [processando, setProcessando] = useState(false);
+
+    function mensagemErro(erro: unknown): string {
+        if (erro instanceof ApiError) {
+            return `Erro ${erro.status}: ${erro.message}`;
+        }
+
+        return "Não foi possível conectar ao servidor. Verifique se o backend está rodando.";
+    }
+
+    function mostrarErro(erro: unknown) {
+        console.error("Erro na API:", erro);
+        alert(mensagemErro(erro));
+    }
 
     useEffect(() => {
         async function buscarClientes() {
             try {
-                const resposta = await fetch("http://localhost:8080/client");
-
-                if (!resposta.ok) {
-                    throw new Error("Não foi possível carregar os clientes.");
-                }
-
-                const dados: Cliente[] = await resposta.json();
+                const dados = await listarClientes();
                 setClientes(dados);
+                setErroClientes("");
             } catch (erro) {
                 console.error("Erro ao buscar clientes:", erro);
-                setErroClientes(
-                    "Não foi possível carregar os clientes. Verifique o backend e a conexão com a API."
-                );
+                setErroClientes(mensagemErro(erro));
             } finally {
                 setCarregandoClientes(false);
             }
@@ -102,6 +118,151 @@ function App() {
 
         buscarClientes();
     }, []);
+
+    // Localiza apenas o cliente criado para os testes.
+    function encontrarClienteTeste() {
+        return clientes.find(
+            (cliente) => cliente.email === "teste@email.com"
+        );
+    }
+
+    // POST - Cadastrar cliente de teste
+    async function testarCadastro() {
+        if (processando) return;
+
+        if (encontrarClienteTeste()) {
+            alert("O Cliente Teste já está cadastrado.");
+            return;
+        }
+
+        const confirmou = window.confirm(
+            "Deseja cadastrar um cliente de teste no banco de dados?"
+        );
+
+        if (!confirmou) return;
+
+        setProcessando(true);
+
+        try {
+            const novoCliente = await cadastrarCliente({
+                name: "Cliente Teste",
+                cpf: "52998224725",
+                email: "teste@email.com",
+                phone: "13999999999",
+            });
+
+            setClientes((anteriores) => [
+                ...anteriores,
+                novoCliente,
+            ]);
+
+            alert("Cliente cadastrado com sucesso!");
+        } catch (erro) {
+            mostrarErro(erro);
+        } finally {
+            setProcessando(false);
+        }
+    }
+
+    // PUT - Atualizar cliente de teste
+    async function testarAtualizacao() {
+        if (processando) return;
+
+        const clienteTeste = encontrarClienteTeste();
+
+        if (!clienteTeste) {
+            alert("Cliente Teste não encontrado.");
+            return;
+        }
+
+        const confirmou = window.confirm(
+            "Deseja atualizar o nome do Cliente Teste?"
+        );
+
+        if (!confirmou) return;
+
+        setProcessando(true);
+
+        try {
+            const atualizado = await atualizarCliente(
+                clienteTeste.id,
+                {
+                    name: "Cliente Teste Atualizado",
+                    cpf: clienteTeste.cpf,
+                    email: clienteTeste.email,
+                    phone: clienteTeste.phone,
+                }
+            );
+
+            setClientes((anteriores) =>
+                anteriores.map((cliente) =>
+                    cliente.id === atualizado.id
+                        ? atualizado
+                        : cliente
+                )
+            );
+
+            alert("Cliente atualizado com sucesso!");
+        } catch (erro) {
+            mostrarErro(erro);
+        } finally {
+            setProcessando(false);
+        }
+    }
+
+    // DELETE - Excluir cliente de teste
+    async function testarExclusao() {
+        if (processando) return;
+
+        const clienteTeste = encontrarClienteTeste();
+
+        if (!clienteTeste) {
+            alert("Cliente Teste não encontrado.");
+            return;
+        }
+
+        const confirmou = window.confirm(
+            `Deseja excluir "${clienteTeste.name}" do banco de dados?`
+        );
+
+        if (!confirmou) return;
+
+        setProcessando(true);
+
+        try {
+            await excluirCliente(clienteTeste.id);
+
+            setClientes((anteriores) =>
+                anteriores.filter(
+                    (cliente) => cliente.id !== clienteTeste.id
+                )
+            );
+
+            alert("Cliente excluído com sucesso!");
+        } catch (erro) {
+            mostrarErro(erro);
+        } finally {
+            setProcessando(false);
+        }
+    }
+
+    // GET - Testar tratamento de erro HTTP 404
+    async function testarErroApi() {
+        if (processando) return;
+
+        setProcessando(true);
+
+        try {
+            await buscarClientePorId(999999999);
+            alert(
+                "O cliente foi encontrado. Escolha outro ID para testar o erro 404."
+            );
+        } catch (erro) {
+            mostrarErro(erro);
+        } finally {
+            setProcessando(false);
+        }
+    }
 
     return (
         <div className="layout">
@@ -155,23 +316,63 @@ function App() {
                         </div>
 
                         <div className="acoes-pagina">
-                            <span className="data-atual">Outubro de 2026</span>
+              <span className="data-atual">
+                Outubro de 2026
+              </span>
+
                             <Botao
                                 texto="+ Novo cliente"
-                                aoClicar={() =>
-                                    alert(
-                                        "A tela de cadastro será implementada na etapa de Clientes."
-                                    )
+                                aoClicar={testarCadastro}
+                                desabilitado={
+                                    processando ||
+                                    carregandoClientes ||
+                                    !!erroClientes
                                 }
+                            />
+
+                            <Botao
+                                texto="Testar PUT"
+                                aoClicar={testarAtualizacao}
+                                variante="secundario"
+                                desabilitado={
+                                    processando ||
+                                    carregandoClientes ||
+                                    !!erroClientes
+                                }
+                            />
+
+                            <Botao
+                                texto="Testar DELETE"
+                                aoClicar={testarExclusao}
+                                variante="secundario"
+                                desabilitado={
+                                    processando ||
+                                    carregandoClientes ||
+                                    !!erroClientes
+                                }
+                            />
+
+                            <Botao
+                                texto="Testar erro 404"
+                                aoClicar={testarErroApi}
+                                variante="secundario"
+                                desabilitado={processando}
                             />
                         </div>
                     </section>
 
-                    <section className="grade-indicadores" aria-label="Indicadores">
+                    <section
+                        className="grade-indicadores"
+                        aria-label="Indicadores"
+                    >
                         <CardIndicador
                             titulo="Total de clientes"
                             valor={
-                                carregandoClientes ? "..." : String(clientes.length)
+                                carregandoClientes
+                                    ? "..."
+                                    : erroClientes
+                                        ? "—"
+                                        : String(clientes.length)
                             }
                             descricao="Clientes cadastrados"
                             simbolo="♙"
@@ -246,8 +447,11 @@ function App() {
                         <div className="painel-cabecalho">
                             <div>
                                 <h3>Manutenções recentes</h3>
-                                <p>Acompanhe os últimos serviços registrados.</p>
+                                <p>
+                                    Acompanhe os últimos serviços registrados.
+                                </p>
                             </div>
+
                             <span className="contador-registros">
                 3 registros de exemplo
               </span>
