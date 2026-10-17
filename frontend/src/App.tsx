@@ -6,6 +6,7 @@ import { ApiError } from "./services/apiError";
 import Clientes from "./pages/Clientes";
 import Manutencoes from "./pages/Manutencoes";
 import Orcamentos from "./pages/Orcamentos";
+import Pagamentos from "./pages/Pagamentos";
 import "./App.css";
 
 type Pagina =
@@ -369,53 +370,6 @@ function Dashboard({
     );
 }
 
-function PaginaEmDesenvolvimento({
-                                     titulo,
-                                     descricao,
-                                 }: {
-    titulo: string;
-    descricao: string;
-}) {
-    return (
-        <>
-            <section className="titulo-pagina">
-                <div>
-          <span className="texto-superior">
-            GESTÃO DE SERVIÇOS
-          </span>
-
-                    <h2>{titulo}</h2>
-
-                    <p>{descricao}</p>
-                </div>
-            </section>
-
-            <section className="painel">
-                <div
-                    style={{
-                        padding: "48px 24px",
-                        textAlign: "center",
-                    }}
-                >
-                    <h3 style={{ marginTop: 0 }}>
-                        Módulo em desenvolvimento
-                    </h3>
-
-                    <p
-                        style={{
-                            color: "var(--cor-texto-secundario)",
-                            marginBottom: 0,
-                        }}
-                    >
-                        Esta tela será conectada ao backend
-                        nas próximas etapas.
-                    </p>
-                </div>
-            </section>
-        </>
-    );
-}
-
 function App() {
     const [paginaAtual, setPaginaAtual] =
         useState<Pagina>("dashboard");
@@ -445,12 +399,7 @@ function App() {
                 return <Orcamentos />;
 
             case "pagamentos":
-                return (
-                    <PaginaEmDesenvolvimento
-                        titulo="Pagamentos"
-                        descricao="Acompanhe os pagamentos dos serviços."
-                    />
-                );
+                return <Pagamentos />;
         }
     }
 

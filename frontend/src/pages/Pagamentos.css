@@ -1,0 +1,591 @@
+
+/* ==========================================
+   VCC MOTORES - TELA DE PAGAMENTOS
+   ========================================== */
+
+.pagina-pagamentos {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    min-width: 0;
+}
+
+/* ==========================================
+   MENSAGENS
+   ========================================== */
+
+.pagamentos-mensagem {
+    padding: 14px 18px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.pagamentos-mensagem-erro {
+    background-color: #fef2f2;
+    border-color: #fecaca;
+    color: #b91c1c;
+}
+
+.pagamentos-mensagem-sucesso {
+    background-color: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #15803d;
+}
+
+/* ==========================================
+   FILTROS
+   ========================================== */
+
+.pagamentos-filtros {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 0 24px 24px;
+}
+
+.pagamentos-filtros .pagamentos-campo {
+    flex: 1;
+    min-width: 180px;
+}
+
+.pagamentos-filtros > button {
+    white-space: nowrap;
+}
+
+/* ==========================================
+   CAMPOS
+   ========================================== */
+
+.pagamentos-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.pagamentos-campo label {
+    color: var(--cor-texto, #1e293b);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.pagamentos-campo input,
+.pagamentos-campo select,
+.pagamentos-campo textarea {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #d8dee8;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: var(--cor-texto, #1e293b);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+}
+
+.pagamentos-campo input:focus,
+.pagamentos-campo select:focus,
+.pagamentos-campo textarea:focus {
+    border-color: var(--cor-principal, #2563eb);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.pagamentos-campo input:disabled,
+.pagamentos-campo select:disabled {
+    background-color: #f1f5f9;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+.pagamentos-campo input::placeholder {
+    color: #94a3b8;
+}
+
+.pagamentos-campo small {
+    color: var(--cor-texto-secundario, #64748b);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.pagamentos-campo-completo {
+    grid-column: 1 / -1;
+}
+
+.pagamentos-campo-somente-leitura {
+    padding: 12px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ==========================================
+   TABELA
+   ========================================== */
+
+.pagina-pagamentos .tabela-container {
+    overflow-x: auto;
+}
+
+.pagina-pagamentos .tabela {
+    min-width: 1050px;
+}
+
+.pagamentos-valor {
+    color: var(--cor-texto, #1e293b);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.pagamentos-estado {
+    margin: 0;
+    padding: 20px 24px 32px;
+    color: var(--cor-texto-secundario, #64748b);
+    font-size: 14px;
+}
+
+/* ==========================================
+   STATUS
+   ========================================== */
+
+.pagamentos-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.pagamentos-status-pendente {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.pagamentos-status-pago {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.pagamentos-status-cancelado {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+/* ==========================================
+   ACOES DA TABELA
+   ========================================== */
+
+.pagamentos-acoes-tabela {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-width: 220px;
+}
+
+.pagamentos-acoes-tabela button {
+    padding: 7px 10px;
+    border: 1px solid #dbe3ee;
+    border-radius: 6px;
+    background-color: #f8fafc;
+    color: #334155;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+            background-color 0.2s ease,
+            border-color 0.2s ease,
+            color 0.2s ease;
+}
+
+.pagamentos-acoes-tabela button:hover:not(:disabled) {
+    background-color: #eaf1ff;
+    border-color: #bfdbfe;
+    color: #1d4ed8;
+}
+
+.pagamentos-acoes-tabela .pagamentos-acao-pagar {
+    background-color: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #15803d;
+}
+
+.pagamentos-acoes-tabela .pagamentos-acao-pagar:hover:not(:disabled) {
+    background-color: #dcfce7;
+    border-color: #86efac;
+    color: #166534;
+}
+
+.pagamentos-acoes-tabela .pagamentos-acao-cancelar {
+    background-color: #fff7ed;
+    border-color: #fed7aa;
+    color: #c2410c;
+}
+
+.pagamentos-acoes-tabela .pagamentos-acao-cancelar:hover:not(:disabled) {
+    background-color: #ffedd5;
+    border-color: #fdba74;
+    color: #9a3412;
+}
+
+.pagamentos-acoes-tabela .pagamentos-acao-excluir {
+    background-color: #fff7f7;
+    border-color: #fecaca;
+    color: #dc2626;
+}
+
+.pagamentos-acoes-tabela .pagamentos-acao-excluir:hover:not(:disabled) {
+    background-color: #fee2e2;
+    border-color: #fca5a5;
+    color: #b91c1c;
+}
+
+/* ==========================================
+   MODAL - FUNDO
+   ========================================== */
+
+.pagamentos-modal-fundo {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background-color: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(3px);
+}
+
+/* ==========================================
+   MODAL - JANELA
+   ========================================== */
+
+.pagamentos-modal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 720px;
+    max-height: calc(100dvh - 48px);
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background-color: #ffffff;
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.25);
+    outline: none;
+    animation: pagamentos-modal-entrada 0.2s ease-out;
+}
+
+@keyframes pagamentos-modal-entrada {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==========================================
+   MODAL - CABECALHO
+   ========================================== */
+
+.pagamentos-modal-cabecalho {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 24px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.pagamentos-modal-cabecalho h3 {
+    margin: 8px 0 0;
+    color: var(--cor-texto, #1e293b);
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.pagamentos-modal-fechar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    color: #475569;
+    font-family: inherit;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+            background-color 0.2s ease,
+            color 0.2s ease;
+}
+
+.pagamentos-modal-fechar:hover:not(:disabled) {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+/* ==========================================
+   MODAL - CONTEUDO
+   ========================================== */
+
+.pagamentos-modal-conteudo {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+.pagamentos-modal-conteudo > .pagamentos-mensagem {
+    margin-bottom: 20px;
+}
+
+/* ==========================================
+   FORMULARIO
+   ========================================== */
+
+.pagamentos-formulario {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.pagamentos-formulario-acoes {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    grid-column: 1 / -1;
+    padding-top: 8px;
+}
+
+.pagamentos-formulario-acoes button {
+    min-width: 130px;
+}
+
+.pagamentos-aviso {
+    padding: 14px;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    background-color: #fffbeb;
+    color: #92400e;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* ==========================================
+   DETALHES DO PAGAMENTO
+   ========================================== */
+
+.pagamentos-detalhes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0;
+}
+
+.pagamentos-detalhes > div {
+    min-width: 0;
+    padding: 14px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+}
+
+.pagamentos-detalhes dt {
+    margin-bottom: 8px;
+    color: var(--cor-texto-secundario, #64748b);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.pagamentos-detalhes dd {
+    margin: 0;
+    color: var(--cor-texto, #1e293b);
+    font-size: 14px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+}
+
+.pagamentos-detalhe-completo {
+    grid-column: 1 / -1;
+}
+
+/* ==========================================
+   MANUTENCOES VINCULADAS
+   ========================================== */
+
+.pagamentos-detalhes-manutencoes {
+    margin-top: 24px;
+}
+
+.pagamentos-detalhes-manutencoes h4 {
+    margin: 0 0 14px;
+    color: var(--cor-texto, #1e293b);
+    font-size: 15px;
+}
+
+.pagamentos-detalhes-manutencoes > p {
+    color: var(--cor-texto-secundario, #64748b);
+    font-size: 13px;
+}
+
+.pagamentos-detalhes-manutencoes ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pagamentos-detalhes-manutencoes li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    padding: 14px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    font-size: 13px;
+}
+
+.pagamentos-detalhes-manutencoes li strong {
+    color: var(--cor-principal, #2563eb);
+}
+
+.pagamentos-detalhes-manutencoes li span {
+    color: var(--cor-texto, #1e293b);
+    font-weight: 600;
+}
+
+.pagamentos-detalhes-manutencoes li p {
+    flex-basis: 100%;
+    margin: 2px 0 0;
+    color: var(--cor-texto-secundario, #64748b);
+    line-height: 1.5;
+}
+
+.pagamentos-detalhes-acoes {
+    margin-top: 24px;
+}
+
+/* ==========================================
+   BOTOES DESABILITADOS
+   ========================================== */
+
+.pagina-pagamentos button:disabled,
+.pagamentos-modal button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   RESPONSIVIDADE
+   ========================================== */
+
+@media (max-width: 900px) {
+    .pagamentos-filtros {
+        gap: 12px;
+    }
+
+    .pagamentos-filtros .pagamentos-campo {
+        min-width: 160px;
+    }
+}
+
+@media (max-width: 600px) {
+    .pagina-pagamentos {
+        gap: 18px;
+    }
+
+    .pagamentos-filtros {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 16px 20px;
+    }
+
+    .pagamentos-filtros .pagamentos-campo {
+        width: 100%;
+    }
+
+    .pagamentos-modal-fundo {
+        padding: 12px;
+    }
+
+    .pagamentos-modal {
+        max-height: calc(100dvh - 24px);
+        border-radius: 12px;
+    }
+
+    .pagamentos-modal-cabecalho {
+        padding: 18px;
+    }
+
+    .pagamentos-modal-cabecalho h3 {
+        font-size: 19px;
+    }
+
+    .pagamentos-modal-conteudo {
+        padding: 18px;
+    }
+
+    .pagamentos-formulario {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .pagamentos-campo-completo,
+    .pagamentos-detalhe-completo {
+        grid-column: auto;
+    }
+
+    .pagamentos-detalhes {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .pagamentos-formulario-acoes {
+        justify-content: stretch;
+    }
+
+    .pagamentos-formulario-acoes button {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .pagamentos-estado {
+        padding: 16px 20px 24px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pagamentos-modal {
+        animation: none;
+    }
+}
