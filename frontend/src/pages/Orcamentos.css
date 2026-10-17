@@ -1,0 +1,683 @@
+
+/* ==========================================
+   VCC MOTORES - TELA DE ORCAMENTOS
+   ========================================== */
+
+.pagina-orcamentos {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    min-width: 0;
+}
+
+/* ==========================================
+   MENSAGENS
+   ========================================== */
+
+.orcamentos-mensagem {
+    padding: 14px 18px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.orcamentos-mensagem-erro {
+    background-color: #fef2f2;
+    border-color: #fecaca;
+    color: #b91c1c;
+}
+
+.orcamentos-mensagem-sucesso {
+    background-color: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #15803d;
+}
+
+/* ==========================================
+   FILTROS
+   ========================================== */
+
+.orcamentos-filtros {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 0 24px 24px;
+}
+
+.orcamentos-filtros .orcamentos-campo {
+    flex: 1;
+    min-width: 180px;
+}
+
+.orcamentos-filtros > button {
+    white-space: nowrap;
+}
+
+/* ==========================================
+   CAMPOS
+   ========================================== */
+
+.orcamentos-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.orcamentos-campo label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cor-texto);
+}
+
+.orcamentos-campo input,
+.orcamentos-campo select,
+.orcamentos-campo textarea {
+    width: 100%;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid #d8dee8;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: var(--cor-texto);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+}
+
+.orcamentos-campo input:focus,
+.orcamentos-campo select:focus,
+.orcamentos-campo textarea:focus {
+    border-color: var(--cor-principal);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.orcamentos-campo input:disabled,
+.orcamentos-campo select:disabled,
+.orcamentos-campo textarea:disabled {
+    background-color: #f1f5f9;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+.orcamentos-campo input::placeholder {
+    color: #94a3b8;
+}
+
+/* ==========================================
+   TABELA
+   ========================================== */
+
+.pagina-orcamentos .tabela-container {
+    overflow-x: auto;
+}
+
+.pagina-orcamentos .tabela {
+    min-width: 920px;
+}
+
+.orcamentos-valor {
+    color: var(--cor-texto);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.orcamentos-estado {
+    margin: 0;
+    padding: 20px 24px 32px;
+    color: var(--cor-texto-secundario);
+    font-size: 14px;
+}
+
+/* ==========================================
+   STATUS
+   ========================================== */
+
+.orcamentos-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.orcamentos-status-pendente {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.orcamentos-status-aprovado {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.orcamentos-status-cancelado {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+/* ==========================================
+   ACOES DA TABELA
+   ========================================== */
+
+.orcamentos-acoes-tabela {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-width: 200px;
+}
+
+.orcamentos-acoes-tabela button {
+    padding: 7px 10px;
+    border: 1px solid #dbe3ee;
+    border-radius: 6px;
+    background-color: #f8fafc;
+    color: #334155;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+            background-color 0.2s ease,
+            border-color 0.2s ease;
+}
+
+.orcamentos-acoes-tabela button:hover:not(:disabled) {
+    background-color: #eaf1ff;
+    border-color: #bfdbfe;
+    color: #1d4ed8;
+}
+
+.orcamentos-acoes-tabela .orcamentos-acao-aprovar {
+    background-color: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #15803d;
+}
+
+.orcamentos-acoes-tabela .orcamentos-acao-aprovar:hover:not(:disabled) {
+    background-color: #dcfce7;
+    border-color: #86efac;
+}
+
+.orcamentos-acoes-tabela .orcamentos-acao-cancelar {
+    background-color: #fff7ed;
+    border-color: #fed7aa;
+    color: #c2410c;
+}
+
+.orcamentos-acoes-tabela .orcamentos-acao-cancelar:hover:not(:disabled) {
+    background-color: #ffedd5;
+    border-color: #fdba74;
+}
+
+.orcamentos-acoes-tabela .orcamentos-acao-excluir {
+    background-color: #fff7f7;
+    border-color: #fecaca;
+    color: #dc2626;
+}
+
+.orcamentos-acoes-tabela .orcamentos-acao-excluir:hover:not(:disabled) {
+    background-color: #fee2e2;
+    border-color: #fca5a5;
+}
+
+/* ==========================================
+   MODAL - FUNDO ESCURECIDO
+   ========================================== */
+
+.orcamentos-modal-fundo {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background-color: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(3px);
+}
+
+/* ==========================================
+   MODAL - JANELA CENTRAL
+   ========================================== */
+
+.orcamentos-modal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 720px;
+    max-height: calc(100dvh - 48px);
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background-color: #ffffff;
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.25);
+    outline: none;
+    animation: orcamentos-modal-entrada 0.2s ease-out;
+}
+
+@keyframes orcamentos-modal-entrada {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==========================================
+   MODAL - CABECALHO
+   ========================================== */
+
+.orcamentos-modal-cabecalho {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 24px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.orcamentos-modal-cabecalho h3 {
+    margin: 8px 0 0;
+    color: var(--cor-texto);
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.orcamentos-modal-fechar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    color: #475569;
+    font-family: inherit;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+            background-color 0.2s ease,
+            color 0.2s ease;
+}
+
+.orcamentos-modal-fechar:hover:not(:disabled) {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+/* ==========================================
+   MODAL - CONTEUDO
+   ========================================== */
+
+.orcamentos-modal-conteudo {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+.orcamentos-modal-conteudo > .orcamentos-mensagem {
+    margin-bottom: 20px;
+}
+
+/* ==========================================
+   FORMULARIO
+   ========================================== */
+
+.orcamentos-formulario {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.orcamentos-formulario-acoes {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    grid-column: 1 / -1;
+    padding-top: 8px;
+}
+
+.orcamentos-formulario-acoes button {
+    min-width: 130px;
+}
+
+/* ==========================================
+   SELECAO DE MANUTENCOES
+   ========================================== */
+
+.orcamentos-selecao {
+    grid-column: 1 / -1;
+    min-width: 0;
+    margin: 0;
+    padding: 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+.orcamentos-selecao legend {
+    padding: 0 6px;
+    color: var(--cor-texto);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.orcamentos-selecao > p {
+    margin: 0 0 14px;
+    color: var(--cor-texto-secundario);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.orcamentos-selecao > small {
+    display: block;
+    margin-top: 12px;
+    color: var(--cor-texto-secundario);
+    font-size: 12px;
+}
+
+.orcamentos-lista-manutencoes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+.orcamentos-item-manutencao {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    color: var(--cor-texto);
+    font-size: 13px;
+    line-height: 1.5;
+    cursor: pointer;
+    transition:
+            background-color 0.2s ease,
+            border-color 0.2s ease;
+}
+
+.orcamentos-item-manutencao:hover {
+    background-color: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+.orcamentos-item-manutencao:has(input:checked) {
+    background-color: #eff6ff;
+    border-color: var(--cor-principal);
+}
+
+.orcamentos-item-manutencao input {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    accent-color: var(--cor-principal);
+    cursor: pointer;
+}
+
+.orcamentos-item-manutencao span {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.orcamentos-aviso {
+    padding: 14px;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    background-color: #fffbeb;
+    color: #92400e;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* ==========================================
+   MANUTENCOES VINCULADAS NA EDICAO
+   ========================================== */
+
+.orcamentos-vinculos {
+    grid-column: 1 / -1;
+    padding: 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background-color: #f8fafc;
+}
+
+.orcamentos-vinculos strong {
+    color: var(--cor-texto);
+    font-size: 14px;
+}
+
+.orcamentos-vinculos p {
+    margin: 8px 0 12px;
+    color: var(--cor-texto-secundario);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.orcamentos-vinculos ul {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--cor-texto);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.orcamentos-vinculos li {
+    overflow-wrap: anywhere;
+}
+
+/* ==========================================
+   DETALHES
+   ========================================== */
+
+.orcamentos-detalhes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0;
+}
+
+.orcamentos-detalhes > div {
+    min-width: 0;
+    padding: 14px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+}
+
+.orcamentos-detalhes dt {
+    margin-bottom: 8px;
+    color: var(--cor-texto-secundario);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.orcamentos-detalhes dd {
+    margin: 0;
+    color: var(--cor-texto);
+    font-size: 14px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+}
+
+.orcamentos-detalhe-completo {
+    grid-column: 1 / -1;
+}
+
+.orcamentos-detalhes-manutencoes {
+    margin-top: 24px;
+}
+
+.orcamentos-detalhes-manutencoes h4 {
+    margin: 0 0 14px;
+    color: var(--cor-texto);
+    font-size: 15px;
+}
+
+.orcamentos-detalhes-manutencoes > p {
+    color: var(--cor-texto-secundario);
+    font-size: 13px;
+}
+
+.orcamentos-detalhes-manutencoes ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.orcamentos-detalhes-manutencoes li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    padding: 14px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    font-size: 13px;
+}
+
+.orcamentos-detalhes-manutencoes li strong {
+    color: var(--cor-principal);
+}
+
+.orcamentos-detalhes-manutencoes li span {
+    color: var(--cor-texto);
+    font-weight: 600;
+}
+
+.orcamentos-detalhes-manutencoes li p {
+    flex-basis: 100%;
+    margin: 2px 0 0;
+    color: var(--cor-texto-secundario);
+    line-height: 1.5;
+}
+
+.orcamentos-detalhes-acoes {
+    margin-top: 24px;
+}
+
+/* ==========================================
+   BOTOES DESABILITADOS
+   ========================================== */
+
+.pagina-orcamentos button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   RESPONSIVIDADE
+   ========================================== */
+
+@media (max-width: 900px) {
+    .orcamentos-filtros {
+        gap: 12px;
+    }
+
+    .orcamentos-filtros .orcamentos-campo {
+        min-width: 160px;
+    }
+}
+
+@media (max-width: 600px) {
+    .pagina-orcamentos {
+        gap: 18px;
+    }
+
+    .orcamentos-filtros {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 16px 20px;
+    }
+
+    .orcamentos-filtros .orcamentos-campo {
+        width: 100%;
+    }
+
+    .orcamentos-modal-fundo {
+        padding: 12px;
+    }
+
+    .orcamentos-modal {
+        max-height: calc(100dvh - 24px);
+        border-radius: 12px;
+    }
+
+    .orcamentos-modal-cabecalho {
+        padding: 18px;
+    }
+
+    .orcamentos-modal-cabecalho h3 {
+        font-size: 19px;
+    }
+
+    .orcamentos-modal-conteudo {
+        padding: 18px;
+    }
+
+    .orcamentos-formulario {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .orcamentos-selecao,
+    .orcamentos-vinculos,
+    .orcamentos-detalhe-completo {
+        grid-column: auto;
+    }
+
+    .orcamentos-detalhes {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .orcamentos-formulario-acoes {
+        justify-content: stretch;
+    }
+
+    .orcamentos-formulario-acoes button {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .orcamentos-estado {
+        padding: 16px 20px 24px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .orcamentos-modal {
+        animation: none;
+    }
+}

@@ -5,6 +5,7 @@ import { listarClientes } from "./services/ClienteService";
 import { ApiError } from "./services/apiError";
 import Clientes from "./pages/Clientes";
 import Manutencoes from "./pages/Manutencoes";
+import Orcamentos from "./pages/Orcamentos";
 import "./App.css";
 
 type Pagina =
@@ -441,12 +442,7 @@ function App() {
                 return <Manutencoes />;
 
             case "orcamentos":
-                return (
-                    <PaginaEmDesenvolvimento
-                        titulo="Orçamentos"
-                        descricao="Acompanhe os orçamentos e suas aprovações."
-                    />
-                );
+                return <Orcamentos />;
 
             case "pagamentos":
                 return (
