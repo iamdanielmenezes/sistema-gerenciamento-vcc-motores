@@ -1,28 +1,32 @@
 
 import { useEffect, useState } from "react";
 import type { Cliente } from "./types/Client";
-import {
-    listarClientes,
-    cadastrarCliente,
-    atualizarCliente,
-    excluirCliente,
-    buscarClientePorId,
-} from "./services/ClienteService";
+import { listarClientes } from "./services/ClienteService";
 import { ApiError } from "./services/apiError";
-import Botao from "./components/Botao";
+import Clientes from "./pages/Clientes";
 import "./App.css";
 
-type Status = "Em andamento" | "Concluída" | "Aguardando";
+type Pagina =
+    | "dashboard"
+    | "clientes"
+    | "manutencoes"
+    | "orcamentos"
+    | "pagamentos";
 
-type Manutencao = {
+type StatusManutencao =
+    | "Em andamento"
+    | "Concluída"
+    | "Aguardando";
+
+type ManutencaoExemplo = {
     id: number;
     cliente: string;
     servico: string;
     data: string;
-    status: Status;
+    status: StatusManutencao;
 };
 
-const manutencoes: Manutencao[] = [
+const manutencoesExemplo: ManutencaoExemplo[] = [
     {
         id: 101,
         cliente: "Carlos Oliveira",
@@ -46,7 +50,51 @@ const manutencoes: Manutencao[] = [
     },
 ];
 
-function Badge({ status }: { status: Status }) {
+const itensMenu: {
+    pagina: Pagina;
+    icone: string;
+    titulo: string;
+}[] = [
+    {
+        pagina: "dashboard",
+        icone: "▦",
+        titulo: "Dashboard",
+    },
+    {
+        pagina: "clientes",
+        icone: "♙",
+        titulo: "Clientes",
+    },
+    {
+        pagina: "manutencoes",
+        icone: "⚙",
+        titulo: "Manutenções",
+    },
+    {
+        pagina: "orcamentos",
+        icone: "▤",
+        titulo: "Orçamentos",
+    },
+    {
+        pagina: "pagamentos",
+        icone: "▣",
+        titulo: "Pagamentos",
+    },
+];
+
+function mensagemErro(erro: unknown): string {
+    if (erro instanceof ApiError) {
+        return `Erro ${erro.status}: ${erro.message}`;
+    }
+
+    return "Não foi possível conectar ao servidor. Verifique se o backend está funcionando.";
+}
+
+function BadgeManutencao({
+                             status,
+                         }: {
+    status: StatusManutencao;
+}) {
     const classe =
         status === "Concluída"
             ? "badge badge-sucesso"
@@ -72,195 +120,342 @@ function CardIndicador({
         <article className="card-indicador">
             <div className="indicador-topo">
                 <span className="indicador-titulo">{titulo}</span>
+
                 <span className="indicador-icone" aria-hidden="true">
           {simbolo}
         </span>
             </div>
 
             <strong className="indicador-valor">{valor}</strong>
+
             <p className="indicador-descricao">{descricao}</p>
         </article>
     );
 }
 
-function App() {
+function Dashboard({
+                       aoAbrirClientes,
+                   }: {
+    aoAbrirClientes: () => void;
+}) {
     const [clientes, setClientes] = useState<Cliente[]>([]);
-    const [carregandoClientes, setCarregandoClientes] = useState(true);
-    const [erroClientes, setErroClientes] = useState("");
-    const [processando, setProcessando] = useState(false);
-
-    function mensagemErro(erro: unknown): string {
-        if (erro instanceof ApiError) {
-            return `Erro ${erro.status}: ${erro.message}`;
-        }
-
-        return "Não foi possível conectar ao servidor. Verifique se o backend está rodando.";
-    }
-
-    function mostrarErro(erro: unknown) {
-        console.error("Erro na API:", erro);
-        alert(mensagemErro(erro));
-    }
+    const [carregando, setCarregando] = useState(true);
+    const [erro, setErro] = useState("");
 
     useEffect(() => {
-        async function buscarClientes() {
+        let ativo = true;
+
+        async function carregarClientes() {
             try {
                 const dados = await listarClientes();
-                setClientes(dados);
-                setErroClientes("");
-            } catch (erro) {
-                console.error("Erro ao buscar clientes:", erro);
-                setErroClientes(mensagemErro(erro));
+
+                if (ativo) {
+                    setClientes(dados);
+                    setErro("");
+                }
+            } catch (erroRecebido) {
+                if (ativo) {
+                    setErro(mensagemErro(erroRecebido));
+                }
             } finally {
-                setCarregandoClientes(false);
+                if (ativo) {
+                    setCarregando(false);
+                }
             }
         }
 
-        buscarClientes();
+        void carregarClientes();
+
+        return () => {
+            ativo = false;
+        };
     }, []);
 
-    // Localiza apenas o cliente criado para os testes.
-    function encontrarClienteTeste() {
-        return clientes.find(
-            (cliente) => cliente.email === "teste@email.com"
-        );
+    const totalClientes = carregando
+        ? "..."
+        : erro
+            ? "—"
+            : String(clientes.length);
+
+    return (
+        <>
+            <section className="titulo-pagina">
+                <div>
+                    <span className="texto-superior">VISÃO GERAL</span>
+
+                    <h2>Dashboard</h2>
+
+                    <p>
+                        Acompanhe os principais indicadores da oficina.
+                    </p>
+                </div>
+
+                <div className="acoes-pagina">
+                    <button
+                        className="botao botao-primario"
+                        type="button"
+                        onClick={aoAbrirClientes}
+                    >
+                        Gerenciar clientes
+                    </button>
+                </div>
+            </section>
+
+            <section
+                className="grade-indicadores"
+                aria-label="Indicadores da oficina"
+            >
+                <CardIndicador
+                    titulo="Total de clientes"
+                    valor={totalClientes}
+                    descricao="Clientes cadastrados no sistema"
+                    simbolo="♙"
+                />
+
+                <CardIndicador
+                    titulo="Manutenções em andamento"
+                    valor="—"
+                    descricao="Integração em desenvolvimento"
+                    simbolo="⚙"
+                />
+
+                <CardIndicador
+                    titulo="Orçamentos pendentes"
+                    valor="—"
+                    descricao="Integração em desenvolvimento"
+                    simbolo="▤"
+                />
+
+                <CardIndicador
+                    titulo="Pagamentos pendentes"
+                    valor="—"
+                    descricao="Integração em desenvolvimento"
+                    simbolo="$"
+                />
+            </section>
+
+            {erro && (
+                <div
+                    className="clientes-mensagem clientes-mensagem-erro"
+                    role="alert"
+                >
+                    {erro}
+                </div>
+            )}
+
+            <section className="painel">
+                <div className="painel-cabecalho">
+                    <div>
+                        <h3>Clientes cadastrados</h3>
+
+                        <p>
+                            Dados reais recebidos do Spring Boot.
+                        </p>
+                    </div>
+
+                    <button
+                        className="botao botao-secundario"
+                        type="button"
+                        onClick={aoAbrirClientes}
+                    >
+                        Ver todos
+                    </button>
+                </div>
+
+                {carregando ? (
+                    <p style={{ padding: "0 24px 24px" }}>
+                        Carregando clientes...
+                    </p>
+                ) : erro ? (
+                    <p style={{ padding: "0 24px 24px" }}>
+                        Não foi possível carregar os clientes.
+                    </p>
+                ) : clientes.length === 0 ? (
+                    <p style={{ padding: "0 24px 24px" }}>
+                        Nenhum cliente cadastrado.
+                    </p>
+                ) : (
+                    <div className="tabela-container">
+                        <table className="tabela">
+                            <thead>
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">E-mail</th>
+                                <th scope="col">Telefone</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {clientes.slice(0, 5).map((cliente) => (
+                                <tr key={cliente.id}>
+                                    <td className="celula-cliente">
+                                        {cliente.name}
+                                    </td>
+
+                                    <td>{cliente.email}</td>
+
+                                    <td>{cliente.phone}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </section>
+
+            <section className="painel">
+                <div className="painel-cabecalho">
+                    <div>
+                        <h3>Manutenções recentes</h3>
+
+                        <p>
+                            Prévia visual da próxima funcionalidade.
+                        </p>
+                    </div>
+
+                    <span className="contador-registros">
+            Dados de exemplo
+          </span>
+                </div>
+
+                <div className="tabela-container">
+                    <table className="tabela">
+                        <thead>
+                        <tr>
+                            <th scope="col">Nº</th>
+                            <th scope="col">Cliente</th>
+                            <th scope="col">Serviço</th>
+                            <th scope="col">Data</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {manutencoesExemplo.map((manutencao) => (
+                            <tr key={manutencao.id}>
+                                <td>#{manutencao.id}</td>
+
+                                <td className="celula-cliente">
+                                    {manutencao.cliente}
+                                </td>
+
+                                <td>{manutencao.servico}</td>
+
+                                <td>{manutencao.data}</td>
+
+                                <td>
+                                    <BadgeManutencao
+                                        status={manutencao.status}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="painel-rodape">
+          <span>
+            Dados ilustrativos. A integração com manutenções
+            será realizada na próxima etapa.
+          </span>
+                </div>
+            </section>
+        </>
+    );
+}
+
+function PaginaEmDesenvolvimento({
+                                     titulo,
+                                     descricao,
+                                 }: {
+    titulo: string;
+    descricao: string;
+}) {
+    return (
+        <>
+            <section className="titulo-pagina">
+                <div>
+          <span className="texto-superior">
+            GESTÃO DE SERVIÇOS
+          </span>
+
+                    <h2>{titulo}</h2>
+
+                    <p>{descricao}</p>
+                </div>
+            </section>
+
+            <section className="painel">
+                <div
+                    style={{
+                        padding: "48px 24px",
+                        textAlign: "center",
+                    }}
+                >
+                    <h3 style={{ marginTop: 0 }}>
+                        Módulo em desenvolvimento
+                    </h3>
+
+                    <p
+                        style={{
+                            color: "var(--cor-texto-secundario)",
+                            marginBottom: 0,
+                        }}
+                    >
+                        Esta tela será conectada ao backend
+                        nas próximas etapas.
+                    </p>
+                </div>
+            </section>
+        </>
+    );
+}
+
+function App() {
+    const [paginaAtual, setPaginaAtual] =
+        useState<Pagina>("dashboard");
+
+    function navegar(pagina: Pagina) {
+        setPaginaAtual(pagina);
+        window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    // POST - Cadastrar cliente de teste
-    async function testarCadastro() {
-        if (processando) return;
+    function renderizarPagina() {
+        switch (paginaAtual) {
+            case "dashboard":
+                return (
+                    <Dashboard
+                        aoAbrirClientes={() => navegar("clientes")}
+                    />
+                );
 
-        if (encontrarClienteTeste()) {
-            alert("O Cliente Teste já está cadastrado.");
-            return;
-        }
+            case "clientes":
+                return <Clientes />;
 
-        const confirmou = window.confirm(
-            "Deseja cadastrar um cliente de teste no banco de dados?"
-        );
+            case "manutencoes":
+                return (
+                    <PaginaEmDesenvolvimento
+                        titulo="Manutenções"
+                        descricao="Gerencie os serviços realizados pela oficina."
+                    />
+                );
 
-        if (!confirmou) return;
+            case "orcamentos":
+                return (
+                    <PaginaEmDesenvolvimento
+                        titulo="Orçamentos"
+                        descricao="Acompanhe os orçamentos e suas aprovações."
+                    />
+                );
 
-        setProcessando(true);
-
-        try {
-            const novoCliente = await cadastrarCliente({
-                name: "Cliente Teste",
-                cpf: "52998224725",
-                email: "teste@email.com",
-                phone: "13999999999",
-            });
-
-            setClientes((anteriores) => [
-                ...anteriores,
-                novoCliente,
-            ]);
-
-            alert("Cliente cadastrado com sucesso!");
-        } catch (erro) {
-            mostrarErro(erro);
-        } finally {
-            setProcessando(false);
-        }
-    }
-
-    // PUT - Atualizar cliente de teste
-    async function testarAtualizacao() {
-        if (processando) return;
-
-        const clienteTeste = encontrarClienteTeste();
-
-        if (!clienteTeste) {
-            alert("Cliente Teste não encontrado.");
-            return;
-        }
-
-        const confirmou = window.confirm(
-            "Deseja atualizar o nome do Cliente Teste?"
-        );
-
-        if (!confirmou) return;
-
-        setProcessando(true);
-
-        try {
-            const atualizado = await atualizarCliente(
-                clienteTeste.id,
-                {
-                    name: "Cliente Teste Atualizado",
-                    cpf: clienteTeste.cpf,
-                    email: clienteTeste.email,
-                    phone: clienteTeste.phone,
-                }
-            );
-
-            setClientes((anteriores) =>
-                anteriores.map((cliente) =>
-                    cliente.id === atualizado.id
-                        ? atualizado
-                        : cliente
-                )
-            );
-
-            alert("Cliente atualizado com sucesso!");
-        } catch (erro) {
-            mostrarErro(erro);
-        } finally {
-            setProcessando(false);
-        }
-    }
-
-    // DELETE - Excluir cliente de teste
-    async function testarExclusao() {
-        if (processando) return;
-
-        const clienteTeste = encontrarClienteTeste();
-
-        if (!clienteTeste) {
-            alert("Cliente Teste não encontrado.");
-            return;
-        }
-
-        const confirmou = window.confirm(
-            `Deseja excluir "${clienteTeste.name}" do banco de dados?`
-        );
-
-        if (!confirmou) return;
-
-        setProcessando(true);
-
-        try {
-            await excluirCliente(clienteTeste.id);
-
-            setClientes((anteriores) =>
-                anteriores.filter(
-                    (cliente) => cliente.id !== clienteTeste.id
-                )
-            );
-
-            alert("Cliente excluído com sucesso!");
-        } catch (erro) {
-            mostrarErro(erro);
-        } finally {
-            setProcessando(false);
-        }
-    }
-
-    // GET - Testar tratamento de erro HTTP 404
-    async function testarErroApi() {
-        if (processando) return;
-
-        setProcessando(true);
-
-        try {
-            await buscarClientePorId(999999999);
-            alert(
-                "O cliente foi encontrado. Escolha outro ID para testar o erro 404."
-            );
-        } catch (erro) {
-            mostrarErro(erro);
-        } finally {
-            setProcessando(false);
+            case "pagamentos":
+                return (
+                    <PaginaEmDesenvolvimento
+                        titulo="Pagamentos"
+                        descricao="Acompanhe os pagamentos dos serviços."
+                    />
+                );
         }
     }
 
@@ -269,24 +464,56 @@ function App() {
             <aside className="menu-lateral">
                 <div className="marca">
                     <div className="marca-icone">V</div>
+
                     <div>
                         <h2>VCC Motores</h2>
                         <span>Gestão de serviços</span>
                     </div>
                 </div>
 
-                <span className="menu-legenda">MENU PRINCIPAL</span>
+                <span className="menu-legenda">
+          MENU PRINCIPAL
+        </span>
 
-                <nav className="navegacao" aria-label="Menu principal">
-                    <p className="item-menu ativo">▦ Dashboard</p>
-                    <p className="item-menu">♙ Clientes</p>
-                    <p className="item-menu">⚙ Manutenções</p>
-                    <p className="item-menu">▤ Orçamentos</p>
-                    <p className="item-menu">▣ Pagamentos</p>
+                <nav
+                    className="navegacao"
+                    aria-label="Menu principal"
+                >
+                    {itensMenu.map((item) => (
+                        <button
+                            key={item.pagina}
+                            type="button"
+                            className={
+                                paginaAtual === item.pagina
+                                    ? "item-menu ativo"
+                                    : "item-menu"
+                            }
+                            onClick={() => navegar(item.pagina)}
+                            aria-current={
+                                paginaAtual === item.pagina
+                                    ? "page"
+                                    : undefined
+                            }
+                            style={{
+                                width: "100%",
+                                textAlign: "left",
+                                border: "none",
+                                cursor: "pointer",
+                                fontFamily: "inherit",
+                                fontSize: "inherit",
+                            }}
+                        >
+              <span aria-hidden="true">
+                {item.icone}
+              </span>{" "}
+                            {item.titulo}
+                        </button>
+                    ))}
                 </nav>
 
                 <div className="menu-rodape">
                     <span className="status-ponto" />
+
                     <span>Sistema de gerenciamento</span>
                 </div>
             </aside>
@@ -295,11 +522,15 @@ function App() {
                 <header className="cabecalho">
                     <div className="cabecalho-titulo">
                         <h1>Sistema de gerenciamento</h1>
-                        <p>VCC Motores | Gestão de serviços</p>
+
+                        <p>
+                            VCC Motores | Gestão de serviços
+                        </p>
                     </div>
 
                     <div className="usuario">
                         <div className="avatar">V</div>
+
                         <div className="usuario-info">
                             <strong>Administrador</strong>
                             <span>Painel de gestão</span>
@@ -308,191 +539,7 @@ function App() {
                 </header>
 
                 <main className="conteudo">
-                    <section className="titulo-pagina">
-                        <div>
-                            <span className="texto-superior">VISÃO GERAL</span>
-                            <h2>Dashboard</h2>
-                            <p>Acompanhe os principais indicadores da oficina.</p>
-                        </div>
-
-                        <div className="acoes-pagina">
-              <span className="data-atual">
-                Outubro de 2026
-              </span>
-
-                            <Botao
-                                texto="+ Novo cliente"
-                                aoClicar={testarCadastro}
-                                desabilitado={
-                                    processando ||
-                                    carregandoClientes ||
-                                    !!erroClientes
-                                }
-                            />
-
-                            <Botao
-                                texto="Testar PUT"
-                                aoClicar={testarAtualizacao}
-                                variante="secundario"
-                                desabilitado={
-                                    processando ||
-                                    carregandoClientes ||
-                                    !!erroClientes
-                                }
-                            />
-
-                            <Botao
-                                texto="Testar DELETE"
-                                aoClicar={testarExclusao}
-                                variante="secundario"
-                                desabilitado={
-                                    processando ||
-                                    carregandoClientes ||
-                                    !!erroClientes
-                                }
-                            />
-
-                            <Botao
-                                texto="Testar erro 404"
-                                aoClicar={testarErroApi}
-                                variante="secundario"
-                                desabilitado={processando}
-                            />
-                        </div>
-                    </section>
-
-                    <section
-                        className="grade-indicadores"
-                        aria-label="Indicadores"
-                    >
-                        <CardIndicador
-                            titulo="Total de clientes"
-                            valor={
-                                carregandoClientes
-                                    ? "..."
-                                    : erroClientes
-                                        ? "—"
-                                        : String(clientes.length)
-                            }
-                            descricao="Clientes cadastrados"
-                            simbolo="♙"
-                        />
-
-                        <CardIndicador
-                            titulo="Manutenções em andamento"
-                            valor="12"
-                            descricao="Serviços em execução"
-                            simbolo="⚙"
-                        />
-
-                        <CardIndicador
-                            titulo="Orçamentos pendentes"
-                            valor="05"
-                            descricao="Aguardando aprovação"
-                            simbolo="▤"
-                        />
-
-                        <CardIndicador
-                            titulo="Pagamentos pendentes"
-                            valor="08"
-                            descricao="Aguardando pagamento"
-                            simbolo="$"
-                        />
-                    </section>
-
-                    <section className="painel">
-                        <div className="painel-cabecalho">
-                            <div>
-                                <h3>Clientes recebidos da API</h3>
-                                <p>Dados carregados do Spring Boot.</p>
-                            </div>
-                        </div>
-
-                        {carregandoClientes ? (
-                            <p>Carregando clientes...</p>
-                        ) : erroClientes ? (
-                            <p role="alert">{erroClientes}</p>
-                        ) : clientes.length === 0 ? (
-                            <p>Nenhum cliente cadastrado.</p>
-                        ) : (
-                            <div className="tabela-container">
-                                <table className="tabela">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">Nome</th>
-                                        <th scope="col">CPF</th>
-                                        <th scope="col">E-mail</th>
-                                        <th scope="col">Telefone</th>
-                                    </tr>
-                                    </thead>
-
-                                    <tbody>
-                                    {clientes.map((cliente) => (
-                                        <tr key={cliente.id}>
-                                            <td className="celula-cliente">
-                                                {cliente.name}
-                                            </td>
-                                            <td>{cliente.cpf}</td>
-                                            <td>{cliente.email}</td>
-                                            <td>{cliente.phone}</td>
-                                        </tr>
-                                    ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
-                    </section>
-
-                    <section className="painel">
-                        <div className="painel-cabecalho">
-                            <div>
-                                <h3>Manutenções recentes</h3>
-                                <p>
-                                    Acompanhe os últimos serviços registrados.
-                                </p>
-                            </div>
-
-                            <span className="contador-registros">
-                3 registros de exemplo
-              </span>
-                        </div>
-
-                        <div className="tabela-container">
-                            <table className="tabela">
-                                <thead>
-                                <tr>
-                                    <th scope="col">Nº</th>
-                                    <th scope="col">Cliente</th>
-                                    <th scope="col">Serviço</th>
-                                    <th scope="col">Data</th>
-                                    <th scope="col">Status</th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                {manutencoes.map((manutencao) => (
-                                    <tr key={manutencao.id}>
-                                        <td>#{manutencao.id}</td>
-                                        <td className="celula-cliente">
-                                            {manutencao.cliente}
-                                        </td>
-                                        <td>{manutencao.servico}</td>
-                                        <td>{manutencao.data}</td>
-                                        <td>
-                                            <Badge status={manutencao.status} />
-                                        </td>
-                                    </tr>
-                                ))}
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div className="painel-rodape">
-              <span>
-                Dados ilustrativos para a construção da interface.
-              </span>
-                        </div>
-                    </section>
+                    {renderizarPagina()}
 
                     <footer className="rodape-conteudo">
                         VCC Motores · Sistema de gerenciamento
