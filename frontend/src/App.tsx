@@ -4,6 +4,7 @@ import type { Cliente } from "./types/Client";
 import { listarClientes } from "./services/ClienteService";
 import { ApiError } from "./services/apiError";
 import Clientes from "./pages/Clientes";
+import Manutencoes from "./pages/Manutencoes";
 import "./App.css";
 
 type Pagina =
@@ -13,7 +14,7 @@ type Pagina =
     | "orcamentos"
     | "pagamentos";
 
-type StatusManutencao =
+type StatusManutencaoExemplo =
     | "Em andamento"
     | "Concluída"
     | "Aguardando";
@@ -23,7 +24,7 @@ type ManutencaoExemplo = {
     cliente: string;
     servico: string;
     data: string;
-    status: StatusManutencao;
+    status: StatusManutencaoExemplo;
 };
 
 const manutencoesExemplo: ManutencaoExemplo[] = [
@@ -93,7 +94,7 @@ function mensagemErro(erro: unknown): string {
 function BadgeManutencao({
                              status,
                          }: {
-    status: StatusManutencao;
+    status: StatusManutencaoExemplo;
 }) {
     const classe =
         status === "Concluída"
@@ -135,8 +136,10 @@ function CardIndicador({
 
 function Dashboard({
                        aoAbrirClientes,
+                       aoAbrirManutencoes,
                    }: {
     aoAbrirClientes: () => void;
+    aoAbrirManutencoes: () => void;
 }) {
     const [clientes, setClientes] = useState<Cliente[]>([]);
     const [carregando, setCarregando] = useState(true);
@@ -248,9 +251,7 @@ function Dashboard({
                     <div>
                         <h3>Clientes cadastrados</h3>
 
-                        <p>
-                            Dados reais recebidos do Spring Boot.
-                        </p>
+                        <p>Dados reais recebidos do Spring Boot.</p>
                     </div>
 
                     <button
@@ -308,14 +309,16 @@ function Dashboard({
                     <div>
                         <h3>Manutenções recentes</h3>
 
-                        <p>
-                            Prévia visual da próxima funcionalidade.
-                        </p>
+                        <p>Prévia visual da próxima funcionalidade.</p>
                     </div>
 
-                    <span className="contador-registros">
-            Dados de exemplo
-          </span>
+                    <button
+                        className="botao botao-secundario"
+                        type="button"
+                        onClick={aoAbrirManutencoes}
+                    >
+                        Ver manutenções
+                    </button>
                 </div>
 
                 <div className="tabela-container">
@@ -356,8 +359,8 @@ function Dashboard({
 
                 <div className="painel-rodape">
           <span>
-            Dados ilustrativos. A integração com manutenções
-            será realizada na próxima etapa.
+            Dados ilustrativos. O Dashboard será integrado
+            aos registros reais na etapa de indicadores.
           </span>
                 </div>
             </section>
@@ -427,6 +430,7 @@ function App() {
                 return (
                     <Dashboard
                         aoAbrirClientes={() => navegar("clientes")}
+                        aoAbrirManutencoes={() => navegar("manutencoes")}
                     />
                 );
 
@@ -434,12 +438,7 @@ function App() {
                 return <Clientes />;
 
             case "manutencoes":
-                return (
-                    <PaginaEmDesenvolvimento
-                        titulo="Manutenções"
-                        descricao="Gerencie os serviços realizados pela oficina."
-                    />
-                );
+                return <Manutencoes />;
 
             case "orcamentos":
                 return (
@@ -523,9 +522,7 @@ function App() {
                     <div className="cabecalho-titulo">
                         <h1>Sistema de gerenciamento</h1>
 
-                        <p>
-                            VCC Motores | Gestão de serviços
-                        </p>
+                        <p>VCC Motores | Gestão de serviços</p>
                     </div>
 
                     <div className="usuario">

@@ -1,0 +1,506 @@
+
+/* ==========================================
+   VCC MOTORES - TELA DE MANUTENCOES
+   ========================================== */
+
+.pagina-manutencoes {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    min-width: 0;
+}
+
+/* ==========================================
+   MENSAGENS
+   ========================================== */
+
+.manutencoes-mensagem {
+    padding: 14px 18px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.manutencoes-mensagem-erro {
+    background-color: #fef2f2;
+    border-color: #fecaca;
+    color: #b91c1c;
+}
+
+.manutencoes-mensagem-sucesso {
+    background-color: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #15803d;
+}
+
+/* ==========================================
+   FILTROS
+   ========================================== */
+
+.manutencoes-filtros {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 0 24px 24px;
+}
+
+.manutencoes-filtros .manutencoes-campo {
+    flex: 1;
+    min-width: 180px;
+}
+
+.manutencoes-filtros > button {
+    white-space: nowrap;
+}
+
+/* ==========================================
+   CAMPOS
+   ========================================== */
+
+.manutencoes-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.manutencoes-campo label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cor-texto);
+}
+
+.manutencoes-campo input,
+.manutencoes-campo select,
+.manutencoes-campo textarea {
+    width: 100%;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid #d8dee8;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: var(--cor-texto);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+}
+
+.manutencoes-campo input:focus,
+.manutencoes-campo select:focus,
+.manutencoes-campo textarea:focus {
+    border-color: var(--cor-principal);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.manutencoes-campo input:disabled,
+.manutencoes-campo select:disabled,
+.manutencoes-campo textarea:disabled {
+    background-color: #f1f5f9;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+.manutencoes-campo textarea {
+    resize: vertical;
+    min-height: 110px;
+    line-height: 1.5;
+}
+
+.manutencoes-campo textarea::placeholder {
+    color: #94a3b8;
+}
+
+.manutencoes-campo small {
+    align-self: flex-end;
+    color: var(--cor-texto-secundario);
+    font-size: 12px;
+}
+
+/* ==========================================
+   TABELA
+   ========================================== */
+
+.pagina-manutencoes .tabela-container {
+    overflow-x: auto;
+}
+
+.pagina-manutencoes .tabela {
+    min-width: 900px;
+}
+
+.manutencoes-descricao {
+    max-width: 280px;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+}
+
+.manutencoes-estado {
+    margin: 0;
+    padding: 20px 24px 32px;
+    color: var(--cor-texto-secundario);
+    font-size: 14px;
+}
+
+/* ==========================================
+   STATUS
+   ========================================== */
+
+.manutencoes-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.manutencoes-status-orcado {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.manutencoes-status-andamento {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+}
+
+.manutencoes-status-finalizado {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+/* ==========================================
+   ACOES DA TABELA
+   ========================================== */
+
+.manutencoes-acoes-tabela {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-width: 180px;
+}
+
+.manutencoes-acoes-tabela button {
+    padding: 7px 10px;
+    border: 1px solid #dbe3ee;
+    border-radius: 6px;
+    background-color: #f8fafc;
+    color: #334155;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+            background-color 0.2s ease,
+            border-color 0.2s ease;
+}
+
+.manutencoes-acoes-tabela button:hover:not(:disabled) {
+    background-color: #eaf1ff;
+    border-color: #bfdbfe;
+    color: #1d4ed8;
+}
+
+.manutencoes-acoes-tabela .manutencoes-acao-avancar {
+    background-color: #eff6ff;
+    border-color: #bfdbfe;
+    color: #1d4ed8;
+}
+
+.manutencoes-acoes-tabela .manutencoes-acao-avancar:hover:not(:disabled) {
+    background-color: #dbeafe;
+}
+
+.manutencoes-acoes-tabela .manutencoes-acao-excluir {
+    background-color: #fff7f7;
+    border-color: #fecaca;
+    color: #dc2626;
+}
+
+.manutencoes-acoes-tabela .manutencoes-acao-excluir:hover:not(:disabled) {
+    background-color: #fee2e2;
+    border-color: #fca5a5;
+    color: #b91c1c;
+}
+
+/* ==========================================
+   MODAL - FUNDO ESCURECIDO
+   ========================================== */
+
+.manutencoes-modal-fundo {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background-color: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(3px);
+}
+
+/* ==========================================
+   MODAL - JANELA CENTRAL
+   ========================================== */
+
+.manutencoes-modal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 680px;
+    max-height: calc(100dvh - 48px);
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background-color: #ffffff;
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.25);
+    outline: none;
+    animation: manutencoes-modal-entrada 0.2s ease-out;
+}
+
+@keyframes manutencoes-modal-entrada {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==========================================
+   MODAL - CABECALHO
+   ========================================== */
+
+.manutencoes-modal-cabecalho {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 24px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.manutencoes-modal-cabecalho h3 {
+    margin: 8px 0 0;
+    color: var(--cor-texto);
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.manutencoes-modal-fechar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    color: #475569;
+    font-family: inherit;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+            background-color 0.2s ease,
+            color 0.2s ease;
+}
+
+.manutencoes-modal-fechar:hover:not(:disabled) {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+/* ==========================================
+   MODAL - CONTEUDO
+   ========================================== */
+
+.manutencoes-modal-conteudo {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+.manutencoes-modal-conteudo > .manutencoes-mensagem {
+    margin-bottom: 20px;
+}
+
+/* ==========================================
+   FORMULARIO DENTRO DO MODAL
+   ========================================== */
+
+.manutencoes-formulario {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.manutencoes-campo-completo {
+    grid-column: 1 / -1;
+}
+
+.manutencoes-formulario-acoes {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    grid-column: 1 / -1;
+    padding-top: 8px;
+}
+
+.manutencoes-formulario-acoes button {
+    min-width: 130px;
+}
+
+/* ==========================================
+   DETALHES DA MANUTENCAO
+   ========================================== */
+
+.manutencoes-detalhes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0;
+}
+
+.manutencoes-detalhes > div {
+    min-width: 0;
+    padding: 14px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+}
+
+.manutencoes-detalhes dt {
+    margin-bottom: 8px;
+    color: var(--cor-texto-secundario);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.manutencoes-detalhes dd {
+    margin: 0;
+    color: var(--cor-texto);
+    font-size: 14px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+}
+
+.manutencoes-detalhe-completo {
+    grid-column: 1 / -1;
+}
+
+.manutencoes-detalhes-acoes {
+    margin-top: 24px;
+}
+
+/* ==========================================
+   BOTOES DESABILITADOS
+   ========================================== */
+
+.pagina-manutencoes button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   RESPONSIVIDADE
+   ========================================== */
+
+@media (max-width: 900px) {
+    .manutencoes-filtros {
+        gap: 12px;
+    }
+
+    .manutencoes-filtros .manutencoes-campo {
+        min-width: 160px;
+    }
+}
+
+@media (max-width: 600px) {
+    .pagina-manutencoes {
+        gap: 18px;
+    }
+
+    .manutencoes-filtros {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 16px 20px;
+    }
+
+    .manutencoes-filtros .manutencoes-campo {
+        width: 100%;
+    }
+
+    .manutencoes-modal-fundo {
+        padding: 12px;
+    }
+
+    .manutencoes-modal {
+        max-height: calc(100dvh - 24px);
+        border-radius: 12px;
+    }
+
+    .manutencoes-modal-cabecalho {
+        padding: 18px;
+    }
+
+    .manutencoes-modal-cabecalho h3 {
+        font-size: 19px;
+    }
+
+    .manutencoes-modal-conteudo {
+        padding: 18px;
+    }
+
+    .manutencoes-formulario {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .manutencoes-campo-completo,
+    .manutencoes-detalhe-completo {
+        grid-column: auto;
+    }
+
+    .manutencoes-detalhes {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .manutencoes-formulario-acoes {
+        justify-content: stretch;
+    }
+
+    .manutencoes-formulario-acoes button {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .manutencoes-estado {
+        padding: 16px 20px 24px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .manutencoes-modal {
+        animation: none;
+    }
+}
