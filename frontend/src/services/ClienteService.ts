@@ -2,12 +2,12 @@
 import type { Cliente } from "../types/Client";
 import { verificarResposta } from "./apiError";
 
-const API_URL = "http://localhost:8080";
+const API_URL = "/client";
 
 export type NovoCliente = Omit<Cliente, "id">;
 
 export async function listarClientes(): Promise<Cliente[]> {
-    const resposta = await fetch(`${API_URL}/client`);
+    const resposta = await fetch(API_URL);
     await verificarResposta(resposta);
     return (await resposta.json()) as Cliente[];
 }
@@ -16,7 +16,7 @@ export async function buscarClientesPorNome(
     nome: string
 ): Promise<Cliente[]> {
     const resposta = await fetch(
-        `${API_URL}/client?name=${encodeURIComponent(nome)}`
+        `${API_URL}?name=${encodeURIComponent(nome)}`
     );
 
     await verificarResposta(resposta);
@@ -26,7 +26,7 @@ export async function buscarClientesPorNome(
 export async function buscarClientePorId(
     id: number
 ): Promise<Cliente> {
-    const resposta = await fetch(`${API_URL}/client/${id}`);
+    const resposta = await fetch(`${API_URL}/${id}`);
     await verificarResposta(resposta);
     return (await resposta.json()) as Cliente;
 }
@@ -34,7 +34,7 @@ export async function buscarClientePorId(
 export async function cadastrarCliente(
     cliente: NovoCliente
 ): Promise<Cliente> {
-    const resposta = await fetch(`${API_URL}/client`, {
+    const resposta = await fetch(API_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -50,7 +50,7 @@ export async function atualizarCliente(
     id: number,
     cliente: NovoCliente
 ): Promise<Cliente> {
-    const resposta = await fetch(`${API_URL}/client/${id}`, {
+    const resposta = await fetch(`${API_URL}/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -65,7 +65,7 @@ export async function atualizarCliente(
 export async function excluirCliente(
     id: number
 ): Promise<void> {
-    const resposta = await fetch(`${API_URL}/client/${id}`, {
+    const resposta = await fetch(`${API_URL}/${id}`, {
         method: "DELETE",
     });
 

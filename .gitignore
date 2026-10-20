@@ -1,3 +1,4 @@
+
 # Maven
 target/
 .mvn/wrapper/maven-wrapper.jar
@@ -30,13 +31,28 @@ target/
 # Build
 build/
 
+# Frontend - React e Vite
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.vite/
+frontend/*.local
+
+# Variaveis de ambiente do frontend
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
 # Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Java
 *.class
 
-# Arquivos locais de configuração
+# Arquivos locais de configuracao
 src/main/resources/application-local.properties
 
 # Arquivos do sistema

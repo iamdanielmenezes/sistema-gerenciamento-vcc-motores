@@ -7,7 +7,6 @@ import java.util.Objects;
 
 import VCCMotores.Sistema_de_gerenciamento.entities.enums.BudgetStatus;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +16,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.persistence.EnumType;
 
 @Entity
 @Table(name = "tb_budget") 

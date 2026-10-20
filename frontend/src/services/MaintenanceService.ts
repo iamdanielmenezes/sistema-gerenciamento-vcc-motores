@@ -7,10 +7,10 @@ import type {
 } from "../types/Maintenance";
 import { verificarResposta } from "./apiError";
 
-const API_URL = "http://localhost:8080";
+const API_URL = "/maintenance";
 
 export async function listarManutencoes(): Promise<Manutencao[]> {
-    const resposta = await fetch(`${API_URL}/maintenance`);
+    const resposta = await fetch(API_URL);
 
     await verificarResposta(resposta);
 
@@ -20,7 +20,7 @@ export async function listarManutencoes(): Promise<Manutencao[]> {
 export async function buscarManutencaoPorId(
     id: number
 ): Promise<Manutencao> {
-    const resposta = await fetch(`${API_URL}/maintenance/${id}`);
+    const resposta = await fetch(`${API_URL}/${id}`);
 
     await verificarResposta(resposta);
 
@@ -31,7 +31,7 @@ export async function buscarManutencoesPorCliente(
     clienteId: number
 ): Promise<Manutencao[]> {
     const resposta = await fetch(
-        `${API_URL}/maintenance?clientId=${clienteId}`
+        `${API_URL}?clientId=${clienteId}`
     );
 
     await verificarResposta(resposta);
@@ -43,7 +43,7 @@ export async function buscarManutencoesPorStatus(
     status: StatusManutencao
 ): Promise<Manutencao[]> {
     const resposta = await fetch(
-        `${API_URL}/maintenance?status=${encodeURIComponent(status)}`
+        `${API_URL}?status=${encodeURIComponent(status)}`
     );
 
     await verificarResposta(resposta);
@@ -54,7 +54,7 @@ export async function buscarManutencoesPorStatus(
 export async function cadastrarManutencao(
     manutencao: NovaManutencao
 ): Promise<Manutencao> {
-    const resposta = await fetch(`${API_URL}/maintenance`, {
+    const resposta = await fetch(API_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -71,7 +71,7 @@ export async function atualizarManutencao(
     id: number,
     manutencao: AtualizacaoManutencao
 ): Promise<Manutencao> {
-    const resposta = await fetch(`${API_URL}/maintenance/${id}`, {
+    const resposta = await fetch(`${API_URL}/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -87,7 +87,7 @@ export async function atualizarManutencao(
 export async function excluirManutencao(
     id: number
 ): Promise<void> {
-    const resposta = await fetch(`${API_URL}/maintenance/${id}`, {
+    const resposta = await fetch(`${API_URL}/${id}`, {
         method: "DELETE",
     });
 

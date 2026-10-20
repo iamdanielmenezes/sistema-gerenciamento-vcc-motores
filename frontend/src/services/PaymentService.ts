@@ -8,10 +8,10 @@ import type {
 
 import { verificarResposta } from "./apiError";
 
-const API_URL = "http://localhost:8080";
+const API_URL = "/payment";
 
 export async function listarPagamentos(): Promise<Pagamento[]> {
-    const resposta = await fetch(`${API_URL}/payment`);
+    const resposta = await fetch(API_URL);
 
     await verificarResposta(resposta);
 
@@ -21,7 +21,7 @@ export async function listarPagamentos(): Promise<Pagamento[]> {
 export async function buscarPagamentoPorId(
     id: number
 ): Promise<Pagamento> {
-    const resposta = await fetch(`${API_URL}/payment/${id}`);
+    const resposta = await fetch(`${API_URL}/${id}`);
 
     await verificarResposta(resposta);
 
@@ -32,7 +32,7 @@ export async function buscarPagamentosPorStatus(
     status: StatusPagamento
 ): Promise<Pagamento[]> {
     const resposta = await fetch(
-        `${API_URL}/payment?status=${encodeURIComponent(status)}`
+        `${API_URL}?status=${encodeURIComponent(status)}`
     );
 
     await verificarResposta(resposta);
@@ -43,7 +43,7 @@ export async function buscarPagamentosPorStatus(
 export async function cadastrarPagamento(
     pagamento: NovoPagamento
 ): Promise<Pagamento> {
-    const resposta = await fetch(`${API_URL}/payment`, {
+    const resposta = await fetch(API_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -79,7 +79,7 @@ export async function atualizarPagamento(
         },
     };
 
-    const resposta = await fetch(`${API_URL}/payment/${id}`, {
+    const resposta = await fetch(`${API_URL}/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -95,7 +95,7 @@ export async function atualizarPagamento(
 export async function excluirPagamento(
     id: number
 ): Promise<void> {
-    const resposta = await fetch(`${API_URL}/payment/${id}`, {
+    const resposta = await fetch(`${API_URL}/${id}`, {
         method: "DELETE",
     });
 
