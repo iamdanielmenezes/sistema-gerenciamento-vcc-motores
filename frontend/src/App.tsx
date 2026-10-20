@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import type { Cliente } from "./types/Client";
 import type { Manutencao, StatusManutencao } from "./types/Maintenance";
@@ -134,17 +135,40 @@ function Dashboard({
     }, []);
 
     const indicador = (quantidade: number) => carregando ? "..." : erro ? "—" : String(quantidade);
+
+    // Aceita datas em formato brasileiro (dd/MM/yyyy HH:mm:ss)
+    // e ISO (yyyy-MM-dd ou yyyy-MM-ddTHH:mm:ss).
+    function dataEmMilissegundos(valor: string): number {
+        if (!valor) return 0;
+
+        const brasileira = valor.match(
+            /^(\d{2})\/(\d{2})\/(\d{4})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?)?/
+        );
+
+        if (brasileira) {
+            const [, dia, mes, ano, hora = "0", minuto = "0", segundo = "0"] = brasileira;
+            return new Date(
+                Number(ano), Number(mes) - 1, Number(dia),
+                Number(hora), Number(minuto), Number(segundo)
+            ).getTime();
+        }
+
+        const iso = Date.parse(valor);
+        return Number.isNaN(iso) ? 0 : iso;
+    }
+
     const manutencoesRecentes = [...manutencoes]
         .sort((a, b) => {
-            const porData = b.date.localeCompare(a.date);
+            const porData = dataEmMilissegundos(b.date) - dataEmMilissegundos(a.date);
             return porData !== 0 ? porData : b.id - a.id;
         })
         .slice(0, 5);
 
     function formatarData(data: string) {
+        if (/^\d{2}\/\d{2}\/\d{4}/.test(data)) return data;
         const partes = data.slice(0, 10).split("-");
         return partes.length === 3
-            ? `${partes[2]}/${partes[1]}/${partes[0]}`
+            ? `${partes[2]}/${partes[1]}/${partes[0]}${data.length > 10 ? " " + data.slice(11, 19) : ""}`
             : data;
     }
 
