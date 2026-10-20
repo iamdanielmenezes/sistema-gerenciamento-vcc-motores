@@ -423,5 +423,3 @@ A aplicação não possui autenticação de usuários implementada e não deve s
 **Daniel Menezes**
 
 Projeto desenvolvido com o objetivo de unir aprendizado, prática e uma solução voltada a uma necessidade real, como parte do meu portfólio em desenvolvimento backend Java.
-
-[Repositório no GitHub](https://github.com/iamdanielmenezes/sistema-gerenciamento-vcc-motores)
